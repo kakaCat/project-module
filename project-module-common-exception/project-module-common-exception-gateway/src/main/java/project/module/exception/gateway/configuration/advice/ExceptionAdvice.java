@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import project.module.exception.LogicException;
-import project.module.exception.gateway.configuration.common.ApiResponseEntity;
+import project.module.exception.gateway.configuration.common.RestResult;
 
 
 @ControllerAdvice(annotations = RestController.class)
@@ -26,10 +26,10 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(LogicException.class)
     @ResponseStatus(code = HttpStatus.OK)
-    public ApiResponseEntity<String> logicException(LogicException e) {
+    public RestResult<String> logicException(LogicException e) {
         logger.error("遇到业务逻辑异常：【{}】", e.getErrCode());
         // 返回响应实体内容
 
-        return new ApiResponseEntity.Builder<>().errorMsg(e.getErrMsg()).status(ApiResponseEntity.EXCEPTION_STATUS).builder();
+        return new RestResult.Builder<>().errorCode(e.getErrCode()).errorMsg(e.getErrMsg()).status(RestResult.EXCEPTION_STATUS).builder();
     }
 }

@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import project.module.exception.LogicException;
 import project.module.exception.exception.UserException;
 import project.module.exception.exception.enums.ErrorCodeEnum;
-import project.module.exception.gateway.configuration.common.ApiResponseEntity;
+import project.module.exception.gateway.configuration.common.RestResult;
+
 
 /**
  * 测试控制器
@@ -21,7 +22,7 @@ public class IndexController {
      * @return
      */
     @RequestMapping(value = "/index")
-    public ApiResponseEntity<String> index() throws LogicException {
+    public RestResult<String> index() throws LogicException {
         /**
          * 模拟用户不存在
          * 抛出业务逻辑异常
