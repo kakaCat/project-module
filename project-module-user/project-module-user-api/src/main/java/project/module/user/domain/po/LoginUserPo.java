@@ -1,9 +1,9 @@
-package project.module.domain.po;
+package project.module.user.domain.po;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class LoginUser implements Serializable {
+public class LoginUserPo implements Serializable {
 
     private long id;
 
@@ -39,7 +39,7 @@ public class LoginUser implements Serializable {
 
     private Date updateTime;
 
-    private String user_version;
+    private String userVersion;
 
     public long getId() {
         return id;
@@ -177,11 +177,11 @@ public class LoginUser implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getUser_version() {
-        return user_version;
+    public String getUserVersion() {
+        return userVersion;
     }
 
-    public void setUser_version(String user_version) {
-        this.user_version = user_version;
+    public void setUserVersion(String userVersion) {
+        this.userVersion = userVersion;
     }
 }

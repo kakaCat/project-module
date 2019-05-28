@@ -1,12 +1,12 @@
-package project.module.domain.enums;
+package project.module.user.domain.enums;
 
-public enum UserStatus {
-    NORMAL(1),
-    FREEZE(2),
-    DEL(3);
+public enum UserSex {
+
+    MAN(1),
+    WOMAN(0);
 
     private int status;
-    UserStatus(int status) {
+    UserSex(int status) {
         this.status = status;
     }
 
