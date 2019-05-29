@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.module.dict.repository.rdb.dict.CoreDictMapper" >
+  <resultMap id="BaseResultMap" type="project.module.dict.domain.po.CoreDictPo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dict_value" property="dictValue" jdbcType="VARCHAR" />
+    <result column="dict_name" property="dictName" jdbcType="VARCHAR" />
+    <result column="dict_type" property="dictType" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="dict_sort" property="dictSort" jdbcType="INTEGER" />
+    <result column="dict_parent" property="dictParent" jdbcType="INTEGER" />
+    <result column="dict_status" property="dictStatus" jdbcType="TINYINT" />
+    <result column="dict_remark" property="dictRemark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, dict_value, dict_name, dict_type, type_name, dict_sort, dict_parent, dict_status,
+    dict_remark, create_time
+  </sql>
+
+
+  <insert id="inserEntity" parameterType="project.module.dict.domain.po.CoreDictPo">
+		 insert into core_dict (id, dict_value, dict_name,
+          dict_type, type_name, dict_sort,
+          dict_parent, dict_status, dict_remark,
+          create_time)
+        values (#{id,jdbcType=INTEGER}, #{dictValue,jdbcType=VARCHAR}, #{dictName,jdbcType=VARCHAR},
+          #{dictType,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{dictSort,jdbcType=INTEGER},
+          #{dictParent,jdbcType=INTEGER}, #{dictStatus,jdbcType=TINYINT}, #{dictRemark,jdbcType=VARCHAR},
+          #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+
+
+  <update id="updateById" parameterType="project.module.dict.domain.po.CoreDictPo">
+		update core_dict
+        set
+          dict_value = #{record.dictValue,jdbcType=VARCHAR},
+          dict_name = #{record.dictName,jdbcType=VARCHAR},
+          dict_type = #{record.dictType,jdbcType=VARCHAR},
+          type_name = #{record.typeName,jdbcType=VARCHAR},
+          dict_sort = #{record.dictSort,jdbcType=INTEGER},
+          dict_parent = #{record.dictParent,jdbcType=INTEGER},
+          dict_status = #{record.dictStatus,jdbcType=TINYINT},
+          dict_remark = #{record.dictRemark,jdbcType=VARCHAR},
+          create_time = #{record.createTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from core_dict
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>

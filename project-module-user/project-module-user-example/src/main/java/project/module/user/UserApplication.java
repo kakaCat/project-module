@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 全局异常通知入口类
  */
 @SpringBootApplication
-@MapperScan("project.module.user.repository.rdb")
+@MapperScan("project.module.user.repository")
 @RestController
 public class UserApplication {
 	/**

@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import project.module.user.domain.po.LoginUserPo;
 
-@Repository
+
 public interface LoginUserMapper {
 
 	int inserEntity(LoginUserPo entity);

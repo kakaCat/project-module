@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.module.realm.role.repository.rdb.role.CodeRoleMapper" >
+  <resultMap id="BaseResultMap" type="project.module.realm.role.domain.po.CoreRolePo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="role_type" property="roleType" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, role_code, role_name, create_time, role_type
+  </sql>
+
+
+  <insert id="inserEntity" parameterType="project.module.realm.role.domain.po.CoreRolePo">
+       insert into core_role (id, role_code, role_name,
+        create_time, role_type)
+      values (#{id,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{roleType,jdbcType=VARCHAR})
+	</insert>
+
+
+  <update id="updateById" parameterType="project.module.realm.role.domain.po.CoreRolePo">
+		update core_role
+         set
+          role_code = #{record.roleCode,jdbcType=VARCHAR},
+          role_name = #{record.roleName,jdbcType=VARCHAR},
+          create_time = #{record.createTime,jdbcType=TIMESTAMP},
+          role_type = #{record.roleType,jdbcType=VARCHAR}
+          where id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from core_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>

@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class LoginUserPo implements Serializable {
 
-    private long id;
+    private Integer id;
 
     private String avatar;
 
@@ -21,19 +21,21 @@ public class LoginUserPo implements Serializable {
 
     private Date birthday;
 
-    private int sex;
+    private Boolean sex;
 
     private String email;
 
     private String phone;
 
-    private String userStatus;
+    private Byte userStatus;
 
-    private long roleId;
+    private Integer roleId;
 
-    private long deptId;
+    private Integer deptId;
 
-    private int accountType;
+    private Integer userCity;
+
+    private Byte accountType;
 
     private Date createTime;
 
@@ -41,11 +43,11 @@ public class LoginUserPo implements Serializable {
 
     private String userVersion;
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,7 +56,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setAvatar(String avatar) {
-        this.avatar = avatar;
+        this.avatar = avatar == null ? null : avatar.trim();
     }
 
     public String getAccount() {
@@ -62,7 +64,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setAccount(String account) {
-        this.account = account;
+        this.account = account == null ? null : account.trim();
     }
 
     public String getPassword() {
@@ -70,7 +72,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
     public String getSalt() {
@@ -78,7 +80,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setSalt(String salt) {
-        this.salt = salt;
+        this.salt = salt == null ? null : salt.trim();
     }
 
     public String getUserName() {
@@ -86,7 +88,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public String getNiceName() {
@@ -94,7 +96,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setNiceName(String niceName) {
-        this.niceName = niceName;
+        this.niceName = niceName == null ? null : niceName.trim();
     }
 
     public Date getBirthday() {
@@ -105,11 +107,11 @@ public class LoginUserPo implements Serializable {
         this.birthday = birthday;
     }
 
-    public int getSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
@@ -118,7 +120,7 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null : email.trim();
     }
 
     public String getPhone() {
@@ -126,38 +128,46 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = phone == null ? null : phone.trim();
     }
 
-    public String getUserStatus() {
+    public Byte getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(String userStatus) {
+    public void setUserStatus(Byte userStatus) {
         this.userStatus = userStatus;
     }
 
-    public long getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(long roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 
-    public long getDeptId() {
+    public Integer getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(long deptId) {
+    public void setDeptId(Integer deptId) {
         this.deptId = deptId;
     }
 
-    public int getAccountType() {
+    public Integer getUserCity() {
+        return userCity;
+    }
+
+    public void setUserCity(Integer userCity) {
+        this.userCity = userCity;
+    }
+
+    public Byte getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(int accountType) {
+    public void setAccountType(Byte accountType) {
         this.accountType = accountType;
     }
 
@@ -182,6 +192,6 @@ public class LoginUserPo implements Serializable {
     }
 
     public void setUserVersion(String userVersion) {
-        this.userVersion = userVersion;
+        this.userVersion = userVersion == null ? null : userVersion.trim();
     }
 }
