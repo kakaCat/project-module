@@ -29,7 +29,7 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public LoginUserPo selectByPrimaryKey(long id) {
+    public LoginUserPo selectByPrimaryKey(Integer id) {
         return loginUserMapper.selectByPrimaryKey(id);
     }
 }

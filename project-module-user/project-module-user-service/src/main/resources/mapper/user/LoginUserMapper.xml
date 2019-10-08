@@ -73,7 +73,7 @@
 		create_time = #{record.createTime,jdbcType=TIMESTAMP},
 		update_time = #{record.updateTime,jdbcType=TIMESTAMP},
 		user_version = #{record.userVersion,jdbcType=VARCHAR}
-		where id = #{id,jdbcType=BIGINT}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 
 
@@ -81,7 +81,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from login_user
-		where id = #{id,jdbcType=BIGINT}
+		where id = #{id,jdbcType=INTEGER}
 	</select>
 
 

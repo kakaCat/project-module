@@ -14,7 +14,7 @@ public interface LoginUserMapper {
 	int updateById(LoginUserPo entity);
 
 
-	LoginUserPo selectByPrimaryKey(@Param("id") long id);
+	LoginUserPo selectByPrimaryKey(@Param("id") Integer id);
 
 
 

@@ -10,6 +10,6 @@ public interface LoginUserService {
     int updateById(LoginUserPo entity);
 
 
-    LoginUserPo selectByPrimaryKey(long id);
+    LoginUserPo selectByPrimaryKey(Integer id);
 
 }

@@ -20,7 +20,8 @@ USE `project_module`;
 --
 -- Table structure for table `login_user`
 --
-
+0.0.0.0   account.jetbrains.com
+0.0.0.0   www.jetbrains.com
 
 DROP TABLE IF EXISTS `login_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -79,14 +80,29 @@ CREATE TABLE `core_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `core_user_role`;
+DROP TABLE IF EXISTS `core_user_role_org`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `core_user_role` (
+CREATE TABLE `core_user_role_org` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
-  `user_id` int(20) NOT NULL,
-  `role_id` int(20) NOT NULL,
-  `org_id` int(20) NOT NULL,
+  `user_id` int(20) DEFAULT 0,
+  `role_id` int(20) DEFAULT 0,
+  `org_id` int(20) DEFAULT 0,
   `create_time` datetime(6) DEFAULT '1970-01-01',
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8 COMMENT='用户角色关系表';
+
+
+DROP TABLE IF EXISTS `core_org`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `core_org` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `org_code` varchar(16) NOT NULL,
+  `org_name` varchar(16) NOT NULL,
+  `create_time` datetime(6) DEFAULT '1970-01-01',
+  `parent_org_id` int(20) DEFAULT 0,
+  `org_type` varchar(6) DEFAULT -1 COMMENT '1 公司，2 部门，3 小组',
+  `org_status` tinyint(6) DEFAULT 1,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
