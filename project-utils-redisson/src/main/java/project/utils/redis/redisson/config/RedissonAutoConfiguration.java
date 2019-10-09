@@ -11,17 +11,23 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.*;
 import org.springframework.util.ReflectionUtils;
 import project.utils.redis.redisson.lock.DistributedLocker;
 import project.utils.redis.redisson.lock.impl.RedissonDistributedLocker;
+import project.utils.redis.redisson.utils.RedisUtil;
 import project.utils.redis.redisson.utils.RedissLockUtil;
 
 import java.io.IOException;
@@ -52,6 +58,10 @@ public class RedissonAutoConfiguration {
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
         template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(keySerializer());
+        template.setHashKeySerializer(keySerializer());
+        template.setValueSerializer(valueSerializer());
+        template.setHashValueSerializer(valueSerializer());
         return template;
     }
 
@@ -166,11 +176,42 @@ public class RedissonAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(CacheManager.class)
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        //初始化一个RedisCacheWriter
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
+
+        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+
+        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(serializer);
+
+        RedisCacheConfiguration defaultCacheConfig=RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
+
+        return new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
+    }
+
+    private RedisSerializer<String> keySerializer() {
+        return new StringRedisSerializer();
+    }
+    private RedisSerializer<Object> valueSerializer() {
+        return new GenericJackson2JsonRedisSerializer();
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean(DistributedLocker.class)
     DistributedLocker distributedLocker(RedissonClient redissonClient) {
         DistributedLocker locker = new RedissonDistributedLocker();
         locker.setRedissonClient(redissonClient);
         RedissLockUtil.setLocker(locker);
         return locker;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(RedisUtil.class)
+    RedisUtil redisUtil(RedisTemplate<Object, Object> redisTemplate) {
+
+        return new RedisUtil(redisTemplate);
     }
 
 }

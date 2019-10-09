@@ -16,12 +16,7 @@
         <org.redisson.version>3.10.0</org.redisson.version>
     </properties>
 
-
-
-
     <name>Redisson/Spring Boot Starter</name>
-
-
 
     <dependencyManagement>
         <dependencies>
