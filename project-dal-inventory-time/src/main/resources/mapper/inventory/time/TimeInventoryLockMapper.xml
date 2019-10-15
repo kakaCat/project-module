@@ -1,0 +1,182 @@
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.helijia.pivot.inventory.dao.mapper.TimeInventoryLockMapper">-->
+<!--    &lt;!&ndash; 时间库存锁记录 实体映射 &ndash;&gt;-->
+<!--    <resultMap id="resultMap" type="com.helijia.pivot.inventory.model.TimeInventoryLockModel">-->
+<!--        &lt;!&ndash; 时间库存锁记录id &ndash;&gt;-->
+<!--        <id column="id" property="id" jdbcType="BIGINT" />-->
+<!--        &lt;!&ndash; 创建时间 &ndash;&gt;-->
+<!--        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />-->
+<!--        &lt;!&ndash; 最后修改时间 &ndash;&gt;-->
+<!--        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />-->
+<!--        &lt;!&ndash; 锁记录 格式 -3,-2,-1,0,1,2,3,4...  &ndash;&gt;-->
+<!--        <result column="positions" property="positions" jdbcType="VARCHAR" />-->
+<!--        &lt;!&ndash; 刻度单位 1. 15分钟 2. 30分钟 3. 60分钟 &ndash;&gt;-->
+<!--        <result column="unit" property="unit" jdbcType="INTEGER" />-->
+<!--        &lt;!&ndash; 预约时间 YY-MM-dd HH:mm:ss &ndash;&gt;-->
+<!--        <result column="date" property="date" jdbcType="TIMESTAMP" />-->
+<!--        &lt;!&ndash; 锁记录状态 1. 有效 0. 已失效 &ndash;&gt;-->
+<!--        <result column="state" property="state" jdbcType="TINYINT" />-->
+<!--        &lt;!&ndash; 库存对应的领域 &ndash;&gt;-->
+<!--        <result column="scope" property="scope" jdbcType="INTEGER" />-->
+<!--        &lt;!&ndash; 库存对应的领域模型id &ndash;&gt;-->
+<!--        <result column="scope_id" property="scopeId" jdbcType="VARCHAR" />-->
+<!--        &lt;!&ndash; 锁记录对应的领域 &ndash;&gt;-->
+<!--        <result column="lock_scope" property="lockScope" jdbcType="INTEGER" />-->
+<!--        &lt;!&ndash; 锁记录对应的领域id &ndash;&gt;-->
+<!--        <result column="lock_scope_id" property="lockScopeId" jdbcType="VARCHAR" />-->
+<!--    </resultMap>-->
+
+<!--    <insert id="createTimeInventoryLock" useGeneratedKeys="true" keyProperty="id" >-->
+<!--        INSERT INTO inventory_time_lock-->
+<!--        (-->
+<!--            `create_date`, `update_date`, `positions`, `unit`,-->
+<!--            `date`, `state`, `scope`, `scope_id`, `lock_scope`, `lock_scope_id`-->
+<!--        )-->
+<!--        VALUES-->
+<!--        (-->
+<!--            now(), now(), #{positions}, #{unit}, #{date}, #{state}, #{scope}, #{scopeId}, #{lockScope}, #{lockScopeId}-->
+<!--        )-->
+<!--    </insert>-->
+
+<!--    <select id="getTimeInventoryLock" resultMap="resultMap">-->
+<!--        SELECT * FROM inventory_time_lock-->
+<!--        WHERE-->
+<!--            id = #{id}-->
+<!--    </select>-->
+
+<!--    <select id="getTimeInventoryLocks" resultMap="resultMap">-->
+<!--        SELECT * FROM inventory_time_lock-->
+<!--        <where>-->
+<!--            <if test="date != null">-->
+<!--                `date` = #{date}-->
+<!--            </if>-->
+<!--            <if test="startDate != null">-->
+<!--                AND `date` >= #{startDate}-->
+<!--            </if>-->
+<!--            <if test="endDate != null">-->
+<!--                AND `date` &lt; #{endDate}-->
+<!--            </if>-->
+<!--            <if test="state != null">-->
+<!--                AND state = #{state}-->
+<!--            </if>-->
+<!--            <if test="lockScope != null">-->
+<!--                AND lock_scope = #{lockScope}-->
+<!--            </if>-->
+<!--            <if test="lockScopeId != null">-->
+<!--                AND lock_scope_id = #{lockScopeId}-->
+<!--            </if>-->
+<!--            <if test="scope != null">-->
+<!--                AND scope = #{scope}-->
+<!--            </if>-->
+<!--            <if test="scopeId != null">-->
+<!--                AND scope_id = #{scopeId}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        LIMIT #{offset}, #{itemsPerPage}-->
+<!--    </select>-->
+
+<!--    <select id="countTimeInventoryLocks" resultType="int">-->
+<!--        SELECT COUNT(*) FROM inventory_time_lock-->
+<!--        <where>-->
+<!--            <if test="date != null">-->
+<!--                `date` = #{date}-->
+<!--            </if>-->
+<!--            <if test="startDate != null">-->
+<!--                AND `date` >= #{startDate}-->
+<!--            </if>-->
+<!--            <if test="endDate != null">-->
+<!--                AND `date` &lt; #{endDate}-->
+<!--            </if>-->
+<!--            <if test="state != null">-->
+<!--                AND state = #{state}-->
+<!--            </if>-->
+<!--            <if test="lockScope != null">-->
+<!--                AND lock_scope = #{lockScope}-->
+<!--            </if>-->
+<!--            <if test="lockScopeId != null">-->
+<!--                AND lock_scope_id = #{lockScopeId}-->
+<!--            </if>-->
+<!--            <if test="scope != null">-->
+<!--                AND scope = #{scope}-->
+<!--            </if>-->
+<!--            <if test="scopeId != null">-->
+<!--                AND scope_id = #{scopeId}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    <select id="getTimeInventoryLocksByLockScope" resultMap="resultMap">-->
+<!--        SELECT * FROM inventory_time_lock-->
+<!--        <where>-->
+<!--            <if test="lockScope != null">-->
+<!--                lock_scope = #{lockScope}-->
+<!--            </if>-->
+<!--            <if test="lockScopeId != null">-->
+<!--                AND lock_scope_id = #{lockScopeId}-->
+<!--            </if>-->
+<!--            <if test="state != null">-->
+<!--                AND state = #{state}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        LIMIT 30-->
+<!--    </select>-->
+
+<!--    <select id="countTimeInventoryLocksByLockScope" resultType="int">-->
+<!--        SELECT COUNT(*)-->
+<!--        FROM-->
+<!--            inventory_time_lock-->
+<!--        WHERE-->
+<!--            lock_scope = #{lockScope}-->
+<!--        AND-->
+<!--            lock_scope_id = #{lockScopeId}-->
+<!--    </select>-->
+
+<!--    <select id="getTimeInventoryLocksByScopeAndDates" resultMap="resultMap">-->
+<!--        SELECT * FROM inventory_time_lock-->
+<!--        <where>-->
+<!--            <if test="scope != null">-->
+<!--                scope = #{scope}-->
+<!--            </if>-->
+<!--            <if test="scopeId != null">-->
+<!--                AND scope_id = #{scopeId}-->
+<!--            </if>-->
+<!--            <if test="state != null">-->
+<!--                AND state = #{state}-->
+<!--            </if>-->
+<!--            <if test="startDate != null">-->
+<!--                AND date >= #{startDate}-->
+<!--            </if>-->
+<!--            <if test="endDate != null">-->
+<!--                AND date &lt; #{endDate}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash; 应用场景例如: 针对于先锁时间后产生订单的业务 &ndash;&gt;-->
+<!--    <update id="updateTimeInventoryLock">-->
+<!--        UPDATE inventory_time_lock-->
+<!--        <set>-->
+<!--            update_date = now(),-->
+<!--            <if test="lockScope != null">lock_scope = #{lockScope},</if>-->
+<!--            <if test="lockScopeId != null">lock_scope_id = #{lockScopeId},</if>-->
+<!--            <if test="positions != null">positions = #{positions}</if>-->
+<!--        </set>-->
+<!--        WHERE-->
+<!--            id = #{id}-->
+<!--        AND-->
+<!--            state = 1-->
+<!--    </update>-->
+
+<!--    <update id="releaseTimeInventoryLock">-->
+<!--        UPDATE inventory_time_lock-->
+<!--        SET-->
+<!--            state = 0,-->
+<!--            update_date = now()-->
+<!--        WHERE-->
+<!--            id = #{id}-->
+<!--        AND-->
+<!--            state = 1-->
+<!--    </update>-->
+<!--</mapper>-->
