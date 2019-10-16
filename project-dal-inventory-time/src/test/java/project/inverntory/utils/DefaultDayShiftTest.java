@@ -5,7 +5,7 @@ import project.dal.inventory.time.metadata.ScopeType;
 import project.dal.inventory.time.metadata.TimeUnitState;
 import project.dal.inventory.time.param.TimeInventoryCreateParam;
 import project.dal.inventory.time.policy.TimeInventoryCreatePolicy;
-import project.dal.inventory.time.policy.impl.DefaultDayShift;
+import project.dal.inventory.time.policy.createpolicy.DefaultDayShift;
 import project.dal.inventory.time.utils.DateUtil;
 
 public class DefaultDayShiftTest {

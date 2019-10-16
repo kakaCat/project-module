@@ -1,13 +1,12 @@
 package project.dal.inventory.time.query;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author fangfeng
- * @since 2018/5/21
- */
-public class TimeInventoryOpQuery  {
+@Data
+public class TimeInventoryOpQuery implements DalQuery {
 
     private Integer scope;                      // 库存对应的领域
     private String scopeId;                     // 库存对应的领域模型id

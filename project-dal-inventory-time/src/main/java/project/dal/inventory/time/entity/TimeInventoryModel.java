@@ -4,6 +4,7 @@ import java.util.Date;
 
 
 import lombok.Data;
+import project.dal.inventory.time.metadata.TimeUnitState;
 
 
 /**
@@ -51,26 +52,6 @@ import lombok.Data;
 @Data
 public class TimeInventoryModel extends BaseModel {
 
-
-
-//    public static final int SCOPE_DEV = Integer.MAX_VALUE;      // 领域: 开发
-//    public static final int SCOPE_ARTISAN = 1;                  // 领域: 手艺人
-//    public static final int SCOPE_NEIGHBOR_SHOP_CLERK = 2;      // 领域: 邻里店店员
-//    public static final int SCOPE_NEIGHBOR_SHOP_DEVICE = 3;     // 领域: 邻里店设备
-//    public static final String SCOPE_ID_DEV = "Test For DEV";   // 领域id:
-
-//    public static final int UNIT_QUARTER = 1;                   // 刻度单位，代表一个刻度15分钟
-//    public static final int UNIT_HALF = 2;                      // 刻度单位，代表一个刻度30分钟
-//    public static final int UNIT_FULL = 3;                      // 刻度单位，代表一个刻度60分钟
-//    public static final int DEFAULT_UNIT = UNIT_QUARTER;        // 默认单位，15分钟
-
-    public static final int STATE_INVALID = 0b00;               // 状态：无效，无意义
-    public static final int STATE_DISABLED = 0b01;              // 状态：关闭，不可使用
-    public static final int STATE_UNUSED = 0b10;                // 状态：未约，可使用
-    public static final int STATE_USED = 0b11;                  // 状态：已约，不可使用
-
-
-
     /**
      * @description: //库存所对应的领域
      * {@link project.dal.inventory.time.metadata.ScopeType}
@@ -84,7 +65,7 @@ public class TimeInventoryModel extends BaseModel {
      * @description: //刻度单位
      * {@link project.dal.inventory.time.metadata.TimeUnitState}
      **/
-    private int timeUnit = 1;
+    private int timeUnit = TimeUnitState.UNIT_QUARTER.getState();
     /**
      * @description: //日期
      **/
@@ -99,6 +80,8 @@ public class TimeInventoryModel extends BaseModel {
 
 
 
-
+    public TimeUnitState getTimeUnitState(){
+        return TimeUnitState.getTimeUnitState(timeUnit);
+    }
 
 }

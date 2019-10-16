@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 public abstract class BaseParam implements DalParam,Serializable {
 
-    private static final long serialVersionUID = 1L;
+
     /**
      * @description: //库存对应领域
      **/
@@ -23,7 +23,7 @@ public abstract class BaseParam implements DalParam,Serializable {
      **/
     private int timeUnit = 1;
 
-    public TimeUnitState getTimeUnit(){
+    public TimeUnitState getTimeUnitState(){
         return TimeUnitState.getTimeUnitState(timeUnit);
     }
 

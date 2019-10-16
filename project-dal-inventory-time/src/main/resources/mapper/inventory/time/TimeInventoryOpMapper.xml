@@ -1,113 +1,119 @@
-<!--<?xml version="1.0" encoding="UTF-8" ?>-->
-<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
-<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
-<!--<mapper namespace="com.helijia.pivot.inventory.dao.mapper.TimeInventoryOpMapper">-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.dal.inventory.time.repository.db.TimeInventoryOpMapper">
 
-<!--    <resultMap id="resultModel" type="com.helijia.pivot.inventory.model.TimeInventoryOpModel">-->
-<!--        <id column="id" property="id" jdbcType="BIGINT" />-->
-<!--        <result column="create_time" property="createTime" />-->
-<!--        <result column="scope" property="scope" jdbcType="INTEGER" />-->
-<!--        <result column="scope_id" property="scopeId" jdbcType="VARCHAR" />-->
-<!--        <result column="positions" property="positions" jdbcType="VARCHAR" />-->
-<!--        <result column="unit" property="unit" jdbcType="INTEGER" />-->
-<!--        <result column="date" property="date" />-->
-<!--        <result column="state" property="state" jdbcType="TINYINT"/>-->
-<!--        <result column="op_source" property="opSource" jdbcType="INTEGER" />-->
-<!--    </resultMap>-->
+    <resultMap id="resultModel" type="project.dal.inventory.time.entity.TimeInventoryOpModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+        <result column="scope" property="scope" jdbcType="INTEGER" />
+        <result column="scope_id" property="scopeId" jdbcType="VARCHAR" />
+        <result column="positions" property="positions" jdbcType="VARCHAR" />
+        <result column="time_unit" property="timeUnit" jdbcType="INTEGER" />
+        <result column="inventory_time" property="inventoryTime" jdbcType="TIMESTAMP" />
+        <result column="state" property="state" jdbcType="TINYINT"/>
+        <result column="op_source" property="opSource" jdbcType="INTEGER" />
+    </resultMap>
 
-<!--    <select id="listTimeInventoryOps" resultMap="resultModel">-->
-<!--        SELECT * FROM inventory_time_operation_log-->
-<!--        <where>-->
-<!--            <if test="scope != null">-->
-<!--                scope = #{scope}-->
-<!--            </if>-->
-<!--            <if test="scopeId != null">-->
-<!--                AND scope_id = #{scopeId}-->
-<!--            </if>-->
-<!--            <if test="startDate != null">-->
-<!--                AND `date` >= #{startDate}-->
-<!--            </if>-->
-<!--            <if test="endDate != null">-->
-<!--                AND `date` &lt; #{endDate}-->
-<!--            </if>-->
-<!--            <if test="date != null">-->
-<!--                AND `date` = #{date}-->
-<!--            </if>-->
-<!--            <if test="createTimeLeftRange != null">-->
-<!--                AND `create_time` >= #{createTimeLeftRange}-->
-<!--            </if>-->
-<!--            <if test="createTimeRightRange != null">-->
-<!--                AND `create_time` &lt; #{createTimeRightRange}-->
-<!--            </if>-->
-<!--            <if test="state != null">-->
-<!--                AND `state` = #{state}-->
-<!--            </if>-->
-<!--            <if test="states != null">-->
-<!--                AND state IN-->
-<!--                <foreach collection="states" open="(" close=")" item="item" index="index" separator=",">-->
-<!--                    #{item}-->
-<!--                </foreach>-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        LIMIT #{itemsPerPage} OFFSET #{offset}-->
-<!--    </select>-->
+    <sql id="Base_Column_List">
+		id,scope,scope_id,time_unit,inventory_time,positions,state,
+		create_date,update_date
+	</sql>
 
-<!--    <select id="countTimeInventoryOps" resultType="int">-->
-<!--        SELECT count(*) FROM inventory_time_operation_log-->
-<!--        <where>-->
-<!--            <if test="scope != null">-->
-<!--                scope = #{scope}-->
-<!--            </if>-->
-<!--            <if test="scopeId != null">-->
-<!--                AND scope_id = #{scopeId}-->
-<!--            </if>-->
-<!--            <if test="startDate != null">-->
-<!--                AND `date` >= #{startDate}-->
-<!--            </if>-->
-<!--            <if test="endDate != null">-->
-<!--                AND `date` &lt; #{endDate}-->
-<!--            </if>-->
-<!--            <if test="date != null">-->
-<!--                AND `date` = #{date}-->
-<!--            </if>-->
-<!--            <if test="createTimeLeftRange != null">-->
-<!--                AND `create_time` >= #{createTimeLeftRange}-->
-<!--            </if>-->
-<!--            <if test="createTimeRightRange != null">-->
-<!--                AND `create_time` &lt; #{createTimeRightRange}-->
-<!--            </if>-->
-<!--            <if test="state != null">-->
-<!--                AND `state` = #{state}-->
-<!--            </if>-->
-<!--            <if test="states != null">-->
-<!--                AND state IN-->
-<!--                <foreach collection="states" open="(" close=")" item="item" index="index" separator=",">-->
-<!--                    #{item}-->
-<!--                </foreach>-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
+    <select id="listTimeInventoryOps" resultMap="resultModel">
+        SELECT <include refid="Base_Column_List"/> FROM inventory_time_operation_log
+        <where>
+            <if test="scope != null">
+                scope = #{scope}
+            </if>
+            <if test="scopeId != null">
+                AND scope_id = #{scopeId}
+            </if>
+            <if test="startDate != null">
+                AND `date` >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND `date` &lt; #{endDate}
+            </if>
+            <if test="date != null">
+                AND `date` = #{date}
+            </if>
+            <if test="createTimeLeftRange != null">
+                AND `create_time` >= #{createTimeLeftRange}
+            </if>
+            <if test="createTimeRightRange != null">
+                AND `create_time` &lt; #{createTimeRightRange}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="states != null">
+                AND state IN
+                <foreach collection="states" open="(" close=")" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        LIMIT #{itemsPerPage} OFFSET #{offset}
+    </select>
 
-<!--    <select id="getLastTimeInventoryOpByScopeAndDate" resultMap="resultModel">-->
-<!--        SELECT * FROM inventory_time_operation_log-->
-<!--        WHERE-->
-<!--            scope = #{scope}-->
-<!--        AND-->
-<!--            scope_id = #{scopeId}-->
-<!--        AND-->
-<!--            `date` = #{date}-->
-<!--        ORDER BY id DESC-->
-<!--        LIMIT 1-->
-<!--    </select>-->
+    <select id="countTimeInventoryOps" resultType="int">
+        SELECT count(*) FROM inventory_time_operation_log
+        <where>
+            <if test="scope != null">
+                scope = #{scope}
+            </if>
+            <if test="scopeId != null">
+                AND scope_id = #{scopeId}
+            </if>
+            <if test="startDate != null">
+                AND `date` >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND `date` &lt; #{endDate}
+            </if>
+            <if test="date != null">
+                AND `date` = #{date}
+            </if>
+            <if test="createTimeLeftRange != null">
+                AND `create_time` >= #{createTimeLeftRange}
+            </if>
+            <if test="createTimeRightRange != null">
+                AND `create_time` &lt; #{createTimeRightRange}
+            </if>
+            <if test="state != null">
+                AND `state` = #{state}
+            </if>
+            <if test="states != null">
+                AND state IN
+                <foreach collection="states" open="(" close=")" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
 
-<!--    <insert id="insertTimeInventoryOp" useGeneratedKeys="true" keyProperty="id">-->
-<!--        INSERT INTO inventory_time_operation_log (-->
-<!--            create_time, scope, scope_id, positions, unit, `date`, state, op_source-->
-<!--        )-->
-<!--        VALUES-->
-<!--        (-->
-<!--            now(), #{scope}, #{scopeId}, #{positions}, #{unit}, #{date}, #{state}, #{opSource}-->
-<!--        )-->
-<!--    </insert>-->
+    <select id="getLastTimeInventoryOpByScopeAndDate" resultMap="resultModel">
+        SELECT <include refid="Base_Column_List"/> FROM inventory_time_operation_log
+        WHERE
+            scope = #{scope}
+        AND
+            scope_id = #{scopeId}
+        AND
+            `date` = #{date}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
 
-<!--</mapper>-->
+    <insert id="insertTimeInventoryOp" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inventory_time_operation_log (
+            create_time, scope, scope_id, positions, time_unit, inventory_time, state, op_source
+        )
+        VALUES
+        (
+            now(), #{scope}, #{scopeId}, #{positions}, #{timeUnit}, #{inventoryTime}, #{state}, #{opSource}
+        )
+    </insert>
+
+</mapper>

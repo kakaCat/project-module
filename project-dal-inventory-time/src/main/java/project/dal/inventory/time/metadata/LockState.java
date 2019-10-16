@@ -1,9 +1,9 @@
 package project.dal.inventory.time.metadata;
 
-public enum TimeState {
+public enum LockState {
     STATE_ON(1,"有效"), STATE_OFF(0, "无效");
 
-    private TimeState(int state,String name){
+    private LockState(int state,String name){
         this.state = state;
         this.name = name;
     }

@@ -2,10 +2,7 @@ package project.dal.inventory.time.policy;
 
 import project.dal.inventory.time.param.DalParam;
 
-/**
- *
- * @author jinli Mar 4, 2018
- */
+
 public interface TimeInventoryLockPolicy {
 
     int name();

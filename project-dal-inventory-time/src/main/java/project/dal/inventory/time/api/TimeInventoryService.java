@@ -2,6 +2,7 @@ package project.dal.inventory.time.api;
 
 import project.dal.inventory.time.entity.TimeInventoryModel;
 import project.dal.inventory.time.param.DalParam;
+import project.dal.inventory.time.param.TimeInventoryEnableParam;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public interface TimeInventoryService {
      * {@link TimeInventoryReleaseParam#items}
      * 若无特别说明，则要求相同
      * </p>
-     *
+     * 要删除
      */
 //    void enableTimeInventories(TimeInventoryEnableParam param);
 

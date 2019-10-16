@@ -2,14 +2,15 @@ package project.dal.inventory.time.metadata;
 
 public enum TimeUnitState {
 
-    UNIT_FIVE(0,"5分钟"),UNIT_QUARTER(1,"15分钟"), UNIT_HALF(2, "30分钟"), UNIT_FULL(2, "1小时");
+    UNIT_FIVE(0,192,5),UNIT_QUARTER(1,96,15), UNIT_HALF(2,48, 30), UNIT_FULL(3,24, 60);
 
-    private TimeUnitState(int state,String name){
+    private TimeUnitState(int state,int length, int unitValue){
         this.state = state;
-        this.name = name;
+        this.unitValue = unitValue;
     }
     private int state;
-    private String name;
+    private int length;
+    private int unitValue;
 
     public int getState() {
         return state;
@@ -19,12 +20,20 @@ public enum TimeUnitState {
         this.state = state;
     }
 
-    public String getName() {
-        return name;
+    public int getLength() {
+        return length;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getUnitValue() {
+        return unitValue;
+    }
+
+    public void setUnitValue(int unitValue) {
+        this.unitValue = unitValue;
     }
 
     public static TimeUnitState getTimeUnitState(int state) {

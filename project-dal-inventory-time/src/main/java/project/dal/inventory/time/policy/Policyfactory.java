@@ -27,4 +27,11 @@ public class Policyfactory {
 
         return createPolicies.get(policy);
     }
+
+
+    public TimeInventoryLockPolicy getLockPolicies(int policy) {
+
+        return lockPolicies.get(policy);
+    }
+
 }

@@ -1,9 +1,7 @@
-package project.dal.inventory.time.policy.impl;
+package project.dal.inventory.time.policy.createpolicy;
 
 
-import project.dal.inventory.time.convert.TimeConvert;
 import project.dal.inventory.time.metadata.ByteState;
-import project.dal.inventory.time.metadata.TimeUnitState;
 import project.dal.inventory.time.param.DalParam;
 import project.dal.inventory.time.param.TimeInventoryCreateParam;
 import project.dal.inventory.time.policy.TimeInventoryCreatePolicy;
@@ -41,7 +39,7 @@ public class DefaultDayShift implements TimeInventoryCreatePolicy {
         TimeInventoryCreateParam param = (TimeInventoryCreateParam) delParam;
         TimeInventoryCreateValues values = new TimeInventoryCreateValues();
 
-        int unitMinutes = TimeConvert.getUnitMinutes(param.getTimeUnit());
+        int unitMinutes = param.getTimeUnitState().getUnitValue();
         int currentMinutes = 0;
         int count = 0;
         for (int i=0;currentMinutes < WHOLE_DAY_IN_MINUTES;i++) {
