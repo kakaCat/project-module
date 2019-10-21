@@ -1,8 +1,10 @@
 package project.dal.inventory.time.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public final class DateUtil {
@@ -15,6 +17,12 @@ public final class DateUtil {
 
     private static final long MINUTES_OF_MILLIS = 60*1000L;
 
+    /**
+     * @description: //零点
+     *
+     * @Param [datetime]
+     * @return java.util.Date
+     **/
     public static Date toDate(Date datetime) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(datetime);
@@ -22,7 +30,12 @@ public final class DateUtil {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
-
+    /**
+     * @description: //前 previous 天零点
+     *
+     * @Param [datetime, previous]
+     * @return java.util.Date
+     **/
     public static Date preDate(Date datetime, int previous) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(datetime);
@@ -31,7 +44,12 @@ public final class DateUtil {
         cal.add(Calendar.DATE, -previous);
         return cal.getTime();
     }
-
+    /**
+     * @description: //后 following 天零点
+     *
+     * @Param [datetime, following]
+     * @return java.util.Date
+     **/
     public static Date nextDate(Date datetime, int following) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(datetime);
@@ -82,4 +100,25 @@ public final class DateUtil {
         long interval = to - from;
         return (int) (interval / MINUTES_OF_MILLIS);
     }
+
+    /**
+     * @description: //从startDate到endDate时间级
+     *
+     * @Param [startDate, endDate]
+     * @return java.util.List<java.util.Date>
+     **/
+    public List<Date> getDates(Date startDate,Date endDate) {
+        List<Date> dates = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+
+        while (cal.getTime().getTime() < endDate.getTime()) {
+            dates.add(cal.getTime());
+            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+            cal.add(Calendar.DATE, 1);
+        }
+        return dates;
+    }
+
+
 }

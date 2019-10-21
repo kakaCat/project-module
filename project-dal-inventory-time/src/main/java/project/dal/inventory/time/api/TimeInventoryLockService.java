@@ -2,13 +2,11 @@ package project.dal.inventory.time.api;
 
 
 import project.dal.inventory.time.entity.TimeInventoryLockModel;
+import project.dal.inventory.time.param.TimeInventoryLockParam;
 
 import java.util.List;
 
-/**
- * @author fangfeng
- * @since 2018/3/30
- */
+
 public interface TimeInventoryLockService {
 
     /**
@@ -59,4 +57,7 @@ public interface TimeInventoryLockService {
      * @param inventoryLock
      */
     boolean updateTimeInventoryLock(TimeInventoryLockModel inventoryLock);
+
+
+    TimeInventoryLockModel insertOrUpdateTimeInventoryLock(TimeInventoryLockParam lockParam);
 }

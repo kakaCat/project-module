@@ -66,7 +66,7 @@ public interface TimeInventoryMapper {
      * @param inventory
      * @return 受影响的记录行数
      */
-//    int updateTimeInventory(InternalTimeInventoryModel inventory);
+    int updateTimeInventory(TimeInventoryModel inventory);
 
     /**
      * 删除时间库存记录(仅供测试使用)

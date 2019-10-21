@@ -23,7 +23,7 @@ public class TimeInventoryCreateParam extends BaseParam {
     private Date startDate;     // 时间库存起始时间，前闭后开：[startDate, endDate)
     private Date endDate;       // 时间库存截止时间，前闭后开：[startDate, endDate)
 
-    private int policy = DEFAULT_POLICY;
+    private int policy ;
 
     public List<Date> getDates() {
         List<Date> dates = new ArrayList<>();

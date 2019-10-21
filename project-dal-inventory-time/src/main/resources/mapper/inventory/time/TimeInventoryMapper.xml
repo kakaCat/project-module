@@ -40,19 +40,19 @@
         )
     </insert>
 
-<!--    <insert id="insertTimeInventories" useGeneratedKeys="true" keyProperty="id" parameterType="List">-->
-<!--        INSERT INTO inventory_time (-->
-<!--            `create_date`, `update_date`, `scope`, `scope_id`, `unit`, `date`,-->
-<!--            `value0`, `value1`, `value2`, `value3`, `value4`, `value5`-->
-<!--        )-->
-<!--        VALUES-->
-<!--        <foreach collection="list" index="index" item="item" separator=",">-->
-<!--        (-->
-<!--            now(), now(), #{item.scope}, #{item.scopeId}, #{item.unit}, #{item.date},-->
-<!--            #{item.value0}, #{item.value1}, #{item.value2}, #{item.value3}, #{item.value4}, #{item.value5}-->
-<!--        )-->
-<!--        </foreach>-->
-<!--    </insert>-->
+    <insert id="insertTimeInventories" useGeneratedKeys="true" keyProperty="id" parameterType="List">
+        INSERT INTO inventory_time (
+        `create_date`, `update_date`, `scope`, `scope_id`, `time_unit`, `inventory_time`,
+        `value0`, `value1`, `value2`, `value3`, `value4`, `value5`
+        )
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+        (
+            now(), now(), #{item.scope}, #{item.scopeId}, #{item.timeUnit}, #{item.inventoryTime},
+            #{item.value0}, #{item.value1}, #{item.value2}, #{item.value3}, #{item.value4}, #{item.value5}
+        )
+        </foreach>
+    </insert>
 
     <select id="testTimeInventoryByDates" resultType="java.lang.Long">
         SELECT `id` FROM inventory_time
@@ -129,59 +129,59 @@
         ORDER BY `inventory_time`
     </select>
 
-<!--    <update id="updateTimeInventory">-->
-<!--        UPDATE inventory_time-->
-<!--        <set>-->
-<!--            update_date = now(),-->
-<!--            <foreach collection="changedValues" index="index" item="item" separator=",">-->
-<!--                <choose>-->
-<!--                    <when test='index == "value0"'>-->
-<!--                        `value0` = #{value0}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value1"'>-->
-<!--                        `value1` = #{value1}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value2"'>-->
-<!--                        `value2` = #{value2}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value3"'>-->
-<!--                        `value3` = #{value3}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value4"'>-->
-<!--                        `value4` = #{value4}-->
-<!--                    </when>-->
-<!--                    <otherwise>-->
-<!--                        `value5` = #{value5}-->
-<!--                    </otherwise>-->
-<!--                </choose>-->
-<!--            </foreach>-->
-<!--        </set>-->
-<!--        WHERE-->
-<!--            id = #{id}-->
-<!--        AND-->
-<!--            <foreach collection="changedValues" index="index" item="item" separator=" AND ">-->
-<!--                <choose>-->
-<!--                    <when test='index == "value0"'>-->
-<!--                        `value0` = #{item}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value1"'>-->
-<!--                        `value1` = #{item}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value2"'>-->
-<!--                        `value2` = #{item}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value3"'>-->
-<!--                        `value3` = #{item}-->
-<!--                    </when>-->
-<!--                    <when test='index == "value4"'>-->
-<!--                        `value4` = #{item}-->
-<!--                    </when>-->
-<!--                    <otherwise>-->
-<!--                        `value5` = #{item}-->
-<!--                    </otherwise>-->
-<!--                </choose>-->
-<!--            </foreach>-->
-<!--    </update>-->
+    <update id="updateTimeInventory">
+        UPDATE inventory_time
+        <set>
+            update_date = now(),
+            <foreach collection="changedValues" index="index" item="item" separator=",">
+                <choose>
+                    <when test='index == "value0"'>
+                        `value0` = #{value0}
+                    </when>
+                    <when test='index == "value1"'>
+                        `value1` = #{value1}
+                    </when>
+                    <when test='index == "value2"'>
+                        `value2` = #{value2}
+                    </when>
+                    <when test='index == "value3"'>
+                        `value3` = #{value3}
+                    </when>
+                    <when test='index == "value4"'>
+                        `value4` = #{value4}
+                    </when>
+                    <otherwise>
+                        `value5` = #{value5}
+                    </otherwise>
+                </choose>
+            </foreach>
+        </set>
+        WHERE
+            id = #{id}
+        AND
+            <foreach collection="changedValues" index="index" item="item" separator=" AND ">
+                <choose>
+                    <when test='index == "value0"'>
+                        `value0` = #{item}
+                    </when>
+                    <when test='index == "value1"'>
+                        `value1` = #{item}
+                    </when>
+                    <when test='index == "value2"'>
+                        `value2` = #{item}
+                    </when>
+                    <when test='index == "value3"'>
+                        `value3` = #{item}
+                    </when>
+                    <when test='index == "value4"'>
+                        `value4` = #{item}
+                    </when>
+                    <otherwise>
+                        `value5` = #{item}
+                    </otherwise>
+                </choose>
+            </foreach>
+    </update>
 
 <!--    <delete id="deleteTimeInventory">-->
 <!--        DELETE FROM inventory_time WHERE id = #{id}-->

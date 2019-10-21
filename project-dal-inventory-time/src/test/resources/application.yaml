@@ -7,3 +7,13 @@
 mybatis:
   mapper-locations: classpath*:mapper/*/*/TimeInventoryMapper.xml,classpath*:mapper/*/*/TimeInventoryLockMapper.xml
   type-aliases-package: project.dal.inventory.time.entity.TimeInventoryModel
+
+#logging:
+#  level:
+#    com.bdyh.operation.mapper: debug
+#    root: DEBUG
+#    org:
+#      springFrameWork:
+#        web: DEBUG
+#      hibernate: DEBUG
+#      config: classpath:logback-spring.xml

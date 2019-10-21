@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import project.dal.inventory.time.api.TimeInventoryViewConverter;
+import project.dal.inventory.time.entity.TimeInventoryItemModel;
 import project.dal.inventory.time.entity.TimeInventoryModel;
 import project.dal.inventory.time.entity.TimeInventoryViewModel;
 import project.dal.inventory.time.metadata.ScopeType;
@@ -63,11 +64,18 @@ public class TimeInventoryMapperTest {
         public void ConverterCatesTime() {
 
                 List<Date> list = new ArrayList<>();
-                list.add(DateUtil.toDate(new Date()));
+                list.add(DateUtil.parseDate("2019-10-16"));
                 List<TimeInventoryModel> model = timeInventoryMapper.getTimeInventoriesBySeparateDates(scope, scopeId, list);
 
 
                 TimeInventoryViewModel convert = timeInventoryViewConverter.convert(model.get(0));
-                System.out.println("11");
+
+                StringBuffer sb = new StringBuffer(50);
+                for (TimeInventoryItemModel item : convert.getItems()) {
+                        sb.append(item.getState()).append(item.getStateMessage());
+                }
+                
+                
+                System.out.println(sb.toString());
         }
 }

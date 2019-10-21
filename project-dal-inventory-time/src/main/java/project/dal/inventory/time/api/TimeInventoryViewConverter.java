@@ -89,6 +89,6 @@ public interface TimeInventoryViewConverter {
      * @return 时间库存视图对象列表
      * @see TimeInventoryViewConverter#convert(List, TimeInventoryLockParam)
      */
-//    List<TimeInventoryViewModel> convert(List<TimeInventoryModel> inventories, DalParam lockParam, boolean flag);
+    List<TimeInventoryViewModel> convert(List<TimeInventoryModel> inventories, DalParam lockParam, boolean flag);
 
 }

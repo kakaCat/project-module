@@ -1,8 +1,11 @@
 package project.dal.inventory.time.api;
 
+import project.dal.inventory.time.entity.TimeInventoryLockModel;
 import project.dal.inventory.time.entity.TimeInventoryModel;
 import project.dal.inventory.time.param.DalParam;
 import project.dal.inventory.time.param.TimeInventoryEnableParam;
+import project.dal.inventory.time.param.TimeInventoryLockParam;
+import project.dal.inventory.time.param.TimeInventoryReleaseParam;
 
 import java.util.List;
 
@@ -94,7 +97,7 @@ public interface TimeInventoryService {
      * @param param
      * @return
      */
-//    TimeInventoryLockModel lockTimeInventories(TimeInventoryLockParam param);
+    TimeInventoryLockModel lockTimeInventories(TimeInventoryLockParam param);
 
     /**
      * 锁定时间库存
@@ -105,7 +108,7 @@ public interface TimeInventoryService {
      * @param params
      * @return
      */
-//    List<TimeInventoryLockModel> lockTimeInventories(List<TimeInventoryLockParam> params);
+    List<TimeInventoryLockModel> lockTimeInventories(List<TimeInventoryLockParam> params);
 
     /**
      * 释放时间库存
@@ -121,7 +124,7 @@ public interface TimeInventoryService {
      * <p>未来扩展(目前仅支持邻里店)
      *      1. 针对5星手艺人等提前结束服务等, 需要将部分时间重置为可约
      */
-//    void releaseTimeInventories(TimeInventoryReleaseParam param);
+    void releaseTimeInventories(TimeInventoryReleaseParam param);
 
     /**
      * 释放时间库存
@@ -131,5 +134,5 @@ public interface TimeInventoryService {
      * </p>
      * @param params
      */
-//    void releaseTimeInventories(List<TimeInventoryReleaseParam> params);
+    void releaseTimeInventories(List<TimeInventoryReleaseParam> params);
 }

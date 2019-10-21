@@ -1,6 +1,8 @@
 package project.dal.inventory.time.policy;
 
 import org.springframework.stereotype.Service;
+import project.dal.inventory.time.policy.createpolicy.DefaultDayShift;
+import project.dal.inventory.time.policy.lockpolicy.HomeOrigin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,19 +11,18 @@ import java.util.Map;
 public class Policyfactory {
 
 
-    private static Map<Integer, TimeInventoryCreatePolicy> createPolicies = new HashMap<>();
+    private final static Map<Integer, TimeInventoryCreatePolicy> createPolicies = new HashMap<>(16);
 
-    private static Map<Integer, TimeInventoryLockPolicy> lockPolicies = new HashMap<>();
+    private final static Map<Integer, TimeInventoryLockPolicy> lockPolicies = new HashMap<>(16);
 
 
-    public static void putCreatePolicies(){
-//        createPolicies.put();
+    static  {
+        createPolicies.put(2,new DefaultDayShift());
+
     }
-
-    private static void putlockPolicies(){
-//       lockPolicies.put(lockPolicy.name(), lockPolicy);
+    static  {
+        lockPolicies.put(1,new HomeOrigin());
     }
-
 
     public TimeInventoryCreatePolicy getCreatePolicy(int policy) {
 

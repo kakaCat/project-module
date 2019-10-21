@@ -6,6 +6,7 @@ public enum TimeUnitState {
 
     private TimeUnitState(int state,int length, int unitValue){
         this.state = state;
+        this.length = length;
         this.unitValue = unitValue;
     }
     private int state;

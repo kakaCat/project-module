@@ -78,15 +78,16 @@ public class DefaultTimeInventoryViewConverter implements TimeInventoryViewConve
                 TimeInventoryUtil.getAllowedStates(ByteState.STATE_UNUSED.getState()),
                 TimeInventoryViewModel.STATE_DISABLE);
     }
-//
-//    @Override
-//    public List<TimeInventoryViewModel> convert(List<TimeInventoryModel> inventories, TimeInventoryLockParam lockParam, boolean flag) {
-//        return internalConvert(
-//                inventories,
-//                lockParam,
-//                TimeInventoryUtil.getAllowedStates(TimeInventoryModel.STATE_DISABLED, TimeInventoryModel.STATE_UNUSED),
-//                flag ? TimeInventoryViewModel.STATE_AFFECTED : TimeInventoryViewModel.STATE_DISABLE);
-//    }
+
+    @Override
+    public List<TimeInventoryViewModel> convert(List<TimeInventoryModel> inventories,  DalParam dalParam, boolean flag) {
+        TimeInventoryLockParam lockParam = (TimeInventoryLockParam) dalParam;
+        return internalConvert(
+                inventories,
+                lockParam,
+                TimeInventoryUtil.getAllowedStates(ByteState.STATE_DISABLED.getState(), ByteState.STATE_UNUSED.getState()),
+                flag ? TimeInventoryViewModel.STATE_AFFECTED : TimeInventoryViewModel.STATE_DISABLE);
+    }
 
     /**
      * 内部统一转换的方法

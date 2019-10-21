@@ -40,10 +40,31 @@ public class TimeInventoryRealm {
             int state = getState(i);
             String message = getStateMessage(state);
             list.add(new TimeInventoryItemModel(i, date, state, message));
-            cal.add(Calendar.MINUTE, timeUnitState.getState());
+            cal.add(Calendar.MINUTE, timeUnitState.getUnitValue());
         }
         return list;
     }
+
+//    public List<TimeInventoryItemModel> addpreviousItems(int position){
+//        TimeInventoryModel model = this.timeInventoryModel;
+//        TimeUnitState timeUnitState = this.timeUnitState;
+//        List<TimeInventoryItemModel> list = new ArrayList<>(30);
+//
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(model.getInventoryTime());
+//        position = model.
+//        for (int i = 0; i < values.previous; i++) {
+//            cal.add(Calendar.MINUTE, -timeUnitState.getUnitValue());
+//            if (--position < 0) {
+//                position = timeUnitState.getLength() - 1;
+//            }
+//            items.add(0, new TimeInventoryItemModel(position, cal.getTime()));
+//        }
+//
+//
+//        return list;
+//    }
+
 
 
 

@@ -50,7 +50,7 @@ import project.dal.inventory.time.metadata.TimeUnitState;
  * @author jinli Mar 3, 2018
  */
 @Data
-public class TimeInventoryModel extends BaseModel {
+public class TimeInventoryModel extends BaseModel implements Cloneable {
 
     /**
      * @description: //库存所对应的领域
@@ -82,6 +82,13 @@ public class TimeInventoryModel extends BaseModel {
 
     public TimeUnitState getTimeUnitState(){
         return TimeUnitState.getTimeUnitState(timeUnit);
+    }
+
+
+    @Override
+    public TimeInventoryModel clone() throws CloneNotSupportedException {
+        TimeInventoryModel timeInventoryModel = (TimeInventoryModel)super.clone();
+        return timeInventoryModel;
     }
 
 }
