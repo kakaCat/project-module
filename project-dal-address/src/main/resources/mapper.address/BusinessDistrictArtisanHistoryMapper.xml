@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dal.address.repository.db.BusinessDistrictArtisanHistoryMapper" >
+  <resultMap id="BaseResultMap" type="project.dal.address.entity.BusinessDistrictArtisanHistory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_district_id" property="businessDistrictId" jdbcType="BIGINT" />
+    <result column="artisan_id" property="artisanId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="TINYINT" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    id, business_district_id, artisan_id, create_time, update_time, is_del, del_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from business_district_artisan_history
+    where id = #{id,jdbcType=BIGINT} and `type` = #{type,jdbcType=INTEGER}
+  </select>
+<!--add by lanmao 2017-11-14-->
+  <select id="getBusinessDistrictUpdateHistoryByArtisanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from business_district_artisan_history
+    where artisan_id = #{artisanId}   and `type` = 0
+    <if test="bdIds != null" >
+      and business_district_id IN
+      <foreach item="item" index="index" collection="bdIds" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    order by id desc limit 50;
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from business_district_artisan_history
+    where id = #{id,jdbcType=BIGINT} and `type` = 0
+  </delete>
+
+  <insert id="insert"  >
+    insert into business_district_artisan_history (id, business_district_id, artisan_id, 
+      create_time, update_time, is_del, 
+      del_time)
+    values (#{id,jdbcType=BIGINT}, #{businessDistrictId,jdbcType=BIGINT}, #{artisanId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, 
+      #{delTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective"  >
+    insert into business_district_artisan_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessDistrictId != null" >
+        business_district_id,
+      </if>
+      <if test="artisanId != null" >
+        artisan_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="delTime != null" >
+        del_time,
+      </if>
+        `type`
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="businessDistrictId != null" >
+        #{businessDistrictId,jdbcType=BIGINT},
+      </if>
+      <if test="artisanId != null" >
+        #{artisanId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="delTime != null" >
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+        #{type,jdbcType=INTEGER}
+    </trim>
+  </insert>
+  <select id="countByExample"  resultType="java.lang.Integer" >
+    select count(*) from business_district_artisan_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update business_district_artisan_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.businessDistrictId != null" >
+        business_district_id = #{record.businessDistrictId,jdbcType=BIGINT},
+      </if>
+      <if test="record.artisanId != null" >
+        artisan_id = #{record.artisanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDel != null" >
+        is_del = #{record.isDel,jdbcType=TINYINT},
+      </if>
+      <if test="record.delTime != null" >
+        del_time = #{record.delTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update business_district_artisan_history
+    set id = #{record.id,jdbcType=BIGINT},
+      business_district_id = #{record.businessDistrictId,jdbcType=BIGINT},
+      artisan_id = #{record.artisanId,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_del = #{record.isDel,jdbcType=TINYINT},
+      del_time = #{record.delTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+
+  </update>
+  <update id="updateByPrimaryKeySelective"  >
+    update business_district_artisan_history
+    <set >
+      <if test="businessDistrictId != null" >
+        business_district_id = #{businessDistrictId,jdbcType=BIGINT},
+      </if>
+      <if test="artisanId != null" >
+        artisan_id = #{artisanId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="delTime != null" >
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT} and `type` = #{type,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey"  >
+    update business_district_artisan_history
+    set business_district_id = #{businessDistrictId,jdbcType=BIGINT},
+      artisan_id = #{artisanId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=TINYINT},
+      del_time = #{delTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT} and `type` = 0
+  </update>
+</mapper>

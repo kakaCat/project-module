@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dal.address.repository.db.BusinessDistrictMapper" >
+
+	<resultMap id="businessDistrictResultMap" 
+				type="project.dal.address.entity.BusinessDistrict" >
+	  <id column="id" property="id" jdbcType="BIGINT" />
+	  <result column="is_used" property="isUsed" jdbcType="BOOLEAN" />
+	  <result column="name" property="name" jdbcType="VARCHAR" />
+	  <result column="district" property="district" jdbcType="VARCHAR" />
+	  <result column="points" property="points" jdbcType="VARCHAR" />
+	  <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+	  <result column="sort" property="sort" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		id, is_used, name, district, points, city_code, sort
+	</sql>
+	
+	<select id="queryAllBusinessDistricts" resultMap="businessDistrictResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `business_district` 
+ 		WHERE `is_used` = 1
+	</select>
+	
+	<select id="queryBusinessDistrictsByCity" resultMap="businessDistrictResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `business_district` 
+ 		WHERE `city_code` = #{cityCode}
+ 		AND `is_used` = 1
+	</select>
+	<!--add by lanmao 2017-11-14-->
+	<select id="getBusinessDistrictIdByName" resultType="java.lang.Long">
+		SELECT
+		id
+		FROM `business_district`
+		WHERE name = #{bdName}
+		AND `is_used` = 1
+	</select>
+
+	<select id="queryBusinessDistricts" resultMap="businessDistrictResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `business_district` 
+ 		<choose>
+ 			<when test="list != null and list.size() > 0">
+ 				WHERE `id` IN
+ 				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				ORDER BY FIELD
+				<foreach item="item" index="index" collection="list" open="(id, " separator="," close=")">
+					#{item}
+				</foreach>
+ 			</when>
+ 			<otherwise>
+ 				WHERE 1 = 2
+ 			</otherwise>
+ 		</choose>
+	</select>
+	<!--这三个方法转移到BusinessDistrictArtisanMapper.xml里面-->
+	<!--<select id="queryBusinessDistrictIdsOfArtisan" resultType="java.lang.Long">
+		SELECT `business_district_id` FROM `business_district_artisan`
+ 		WHERE `artisan_id` = #{artisanId}
+	</select>
+
+	<delete id="deleteBusinessDistrictsOfArtisan">
+		DELETE FROM `business_district_artisan` WHERE `artisan_id` = #{artisanId};
+	</delete>
+
+	<insert id="saveBusinessDistrictsOfArtisan">
+		INSERT INTO `business_district_artisan`
+		(`business_district_id`, `artisan_id`, `create_time`) VALUES
+		<foreach collection="businessDistrictIds" item="businessDistrictId"  separator=",">
+            (#{businessDistrictId}, #{artisanId}, NOW())
+        </foreach>
+	</insert>-->
+	
+	<resultMap id="businessDistrictUserResultMap" 
+				type="com.helijia.misc.address.model.BusinessDistrictUser" >
+	  <id column="id" property="id" jdbcType="BIGINT" />
+	  <result column="business_district_id" property="businessDistrictId" jdbcType="BIGINT" />
+	  <result column="user_id" property="userId" jdbcType="VARCHAR" />
+	  <result column="order_amount" property="orderAmount" jdbcType="INTEGER" />
+	  <result column="contain_common_address" property="containCommonAddress" jdbcType="BOOLEAN" />
+	  <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	  <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	  <result column="is_del" property="isDel" jdbcType="BOOLEAN" />
+	</resultMap>
+	
+	<select id="queryBusinessDistrictUser" resultMap="businessDistrictUserResultMap">
+		SELECT * FROM `business_district_user`
+		WHERE `business_district_id` = #{0} 
+		AND `user_id` = #{1}
+		AND `is_del` = 0
+		LIMIT 1
+	</select>
+	
+	<insert id="insertBusinessDistrictUser" parameterType="com.helijia.misc.address.model.BusinessDistrictUser">
+		INSERT INTO `business_district_user`
+		(`business_district_id`, `user_id`, `order_amount`, `contain_common_address`, `create_time`, `update_time`, `is_del`)
+        VALUES(#{businessDistrictId}, #{userId}, #{orderAmount}, #{containCommonAddress}, NOW(), NOW(), #{isDel})
+	</insert>
+	
+	<update id="updateBusinessDistrictUser" parameterType="com.helijia.misc.address.model.BusinessDistrictUser">
+		UPDATE business_district_user SET 	
+			`order_amount` = #{orderAmount},
+			`contain_common_address` = #{containCommonAddress},
+			`update_time` = NOW(),
+			`is_del` = #{isDel}
+		WHERE `business_district_id` = #{businessDistrictId} 
+		AND `user_id` = #{userId}
+	</update>
+	
+	<update id="updateClearContainCommonAddress">
+		UPDATE business_district_user SET 	
+		`contain_common_address` = 0
+		WHERE `user_id` = #{userId}
+	</update>
+	
+	<select id="queryBusinessDistrictIdsOfUser" resultType="java.lang.Long">
+		SELECT `business_district_id` FROM `business_district_user` 
+ 		WHERE `user_Id` = #{userId}
+ 		AND `is_del` = 0
+ 		ORDER BY `order_amount` DESC, `contain_common_address` DESC
+	</select>
+	
+	<select id="queryBusinessDistrictIdsContainCommonAddress" resultType="java.lang.Long">
+		SELECT `business_district_id` FROM `business_district_user` 
+ 		WHERE `user_Id` = #{userId}
+ 		AND `contain_common_address` = 1
+ 		AND `is_del` = 0
+	</select>
+	
+	<select id="queryOldestBDURefreshDate" resultType="java.util.Date">
+		SELECT 
+			`refresh_date`
+ 		FROM `bdu_refresh_log` 
+ 		WHERE `refresh_date` IS NOT NULL
+ 		AND `refresh_date` != '0000-00-00 00:00:00'
+ 		ORDER BY `refresh_date` ASC
+ 		LIMIT 1
+	</select>
+	
+	<select id="hasRefreshedDate" resultType="java.lang.Integer">
+		SELECT 1 FROM `bdu_refresh_log` 
+ 		WHERE DATE_FORMAT(`refresh_date`,'%Y%m%d') = #{yyyyMMdd}
+	</select>
+	
+	<insert id="insertBDURefreshLog" parameterType="java.util.Date">
+		INSERT INTO `bdu_refresh_log`
+		(`refresh_date`, `create_time`)
+        VALUES(#{refreshDate}, NOW())
+	</insert>
+	
+	<!-- 批量保存门店相关图片 -->
+	<insert id="insertUsOrderBusinessDistrict">
+		INSERT INTO `us_order_business_district`
+		(`order_seq`, `business_district_id`) VALUES
+		<foreach collection="businessDistrictIds" item="item" index="index" separator=",">
+            (#{orderSeq}, #{item})
+        </foreach>
+	</insert>
+</mapper>

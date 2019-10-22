@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dal.address.repository.db.UserAddressMapper" >
+
+	<resultMap id="userAddressResultMap" 
+				type="project.dal.address.entity.UserAddress" >
+	  <id column="id" property="id" jdbcType="BIGINT" />
+	  <result column="comm_address" property="commAddress" jdbcType="BOOLEAN" />
+	  <result column="user_id" property="userId" jdbcType="VARCHAR" />
+	  <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
+	  <result column="buyer_mobile" property="buyerMobile" jdbcType="VARCHAR" />
+	  <result column="province" property="province" jdbcType="INTEGER" />
+	  <result column="city" property="city" jdbcType="INTEGER" />
+	  <result column="towns" property="towns" jdbcType="INTEGER" />
+	  <result column="address_poi" property="addressPoi" jdbcType="VARCHAR" />
+	  <result column="address" property="address" jdbcType="VARCHAR" />
+	  <result column="longitude" property="longitude" jdbcType="BIGINT" />
+	  <result column="latitude" property="latitude" jdbcType="BIGINT" />
+	  <result column="create_Date" property="createDate" jdbcType="TIMESTAMP" />
+	  <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+	  <result column="update_time" property="createDate" jdbcType="TIMESTAMP" />
+	  <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR" />
+	  <result column="is_availability" property="isAvailability" jdbcType="VARCHAR" />
+	  <result column="is_del" property="isDel" jdbcType="VARCHAR" />
+	  <result column="location" property="location" jdbcType="VARCHAR" />
+	  <result column="des" property="des" jdbcType="VARCHAR" />
+	  <result column="ip" property="ip" jdbcType="VARCHAR" />
+	  <result column="address_from" property="addressFrom" jdbcType="VARCHAR" />
+	  <result column="user_type" property="userType" jdbcType="VARCHAR" />
+	  <result column="address_aoi" property="addressAoi" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		`id`, `comm_address`, `user_id`,`buyer_name`,`buyer_mobile`, `province`, `city`, `towns`, `address_poi`, `address`, 
+		`longitude`, `latitude`, `create_time`, `create_user_id`, `update_time`,
+		`update_user_id`, `is_availability`, `is_del`, `location`, `des`, `ip`, `address_from`, `user_type`,`address_aoi`
+	</sql>
+	
+	<insert id="insertUserAddress" 
+			useGeneratedKeys="true" 
+			keyProperty="id" 
+			>
+		INSERT INTO user_address(
+			comm_address,
+			user_id,
+			buyer_name,
+			buyer_mobile,
+			city,
+			address_poi,
+			address,
+			longitude,
+			latitude,
+			create_time,
+			create_user_id,
+			update_time,
+			update_user_id,
+			is_availability,
+			is_del,
+			location,
+			ip,
+			address_from,
+			user_type,
+			address_aoi
+		) VALUES (
+			'0',
+			#{userId},
+			#{buyerName},
+			#{buyerMobile},
+			#{city},
+			#{addressPoi},
+			#{address},
+			#{longitude},
+			#{latitude},
+			NOW(),
+			#{userId},
+			NOW(),
+			#{userId},
+			'1',
+			'0',
+			#{location},
+			#{ip},
+			#{addressFrom},
+			#{userType},
+			#{addressAoi}
+		)
+	</insert>
+	
+	<update id="deleteUserAddress">
+		UPDATE user_address SET 	
+			update_time = NOW(),
+			update_user_id = #{userId},
+			is_availability = '0',
+			is_del = '1'
+		WHERE id = #{userAddressId}
+		AND user_id = #{userId}
+	</update>
+	
+	<update id="updateUserAddress" >
+		UPDATE user_address SET 
+			comm_address = #{commAddress},	
+			city = #{city},
+			<if test="buyerName != null">
+				buyer_name = #{buyerName},
+			</if>
+			<if test="buyerMobile != null">
+				buyer_mobile = #{buyerMobile},
+			</if>
+			<if test="addressPoi != null">
+				address_poi = #{addressPoi},
+			</if>
+			<if test="addressAoi != null">
+				address_aoi = #{addressAoi},
+			</if>
+			<if test="location != null">
+				location = #{location},
+			</if>
+			address = #{address},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			update_time = NOW(),
+			update_user_id = #{updateUserId}
+		WHERE id = #{id}
+		AND user_id = #{userId}
+	</update>
+	
+	<select id="updateClearUserAddressDefalut">
+		UPDATE `user_address` SET
+		`comm_address` = '0'
+		WHERE `user_id` = #{userId}
+	</select>
+	
+	<select id="updateSetUserAddressDefalut">
+		UPDATE `user_address` SET
+		`comm_address` = '1'
+		WHERE `user_id` = #{userId}
+		AND `id` = #{userAddressId}
+ 		AND `is_availability` = '1'
+ 		AND `is_del` = '0'
+	</select>
+	
+	<select id="queryUserAddressById" resultMap="userAddressResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `user_address` 
+ 		WHERE `id` = #{userAddressId}
+	</select>
+	
+	<select id="queryUserAddressListByUpdateDate" resultMap="userAddressResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `user_address` 
+ 		WHERE DATE_FORMAT(`update_time`,'%Y%m%d') = #{yyyyMMdd}
+	</select>
+	
+	<select id="queryUserAddresses" resultMap="userAddressResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `user_address` 
+ 		<choose>
+ 			<when test="list != null and list.size() > 0">
+ 				WHERE `id` IN
+ 				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				ORDER BY FIELD
+				<foreach item="item" index="index" collection="list" open="(id, " separator="," close=")">
+					#{item}
+				</foreach>
+ 			</when>
+ 			<otherwise>
+ 				WHERE 1 = 2
+ 			</otherwise>
+ 		</choose>
+	</select>
+	
+	<select id="queryUserAddressesOfUser" resultMap="userAddressResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `user_address` 
+ 		WHERE `user_id` = #{userId}
+ 		AND `is_availability` = 1
+ 		AND `is_del` = 0
+ 		order by `comm_address` desc , address_aoi ='' asc
+	</select>
+	
+	<select id="queryUserAddressOfUserById" resultMap="userAddressResultMap">
+		SELECT 
+			<include refid="columns" />
+ 		FROM `user_address` 
+ 		WHERE `user_id` = #{userId}
+ 		AND `id` = #{userAddressId}
+ 		AND `is_availability` = '1'
+ 		AND `is_del` = '0'
+	</select>
+	
+	<select id="queryUserAddressCountOfUser" resultType="java.lang.Integer">
+		SELECT COUNT(0) FROM `user_address` 
+ 		WHERE `user_id` = #{userId}
+ 		AND `is_availability` = '1'
+ 		AND `is_del` = '0'
+	</select>
+	
+	<select id="queryOldestUpdateDate" resultType="java.util.Date">
+		SELECT 
+			`update_time`
+ 		FROM `user_address` 
+ 		WHERE `update_time` IS NOT NULL
+ 		AND `update_time` != '0000-00-00 00:00:00'
+ 		ORDER BY `update_time` ASC
+ 		LIMIT 1
+	</select>
+	
+	<select id="queryProductAddressId" resultType="java.lang.Long">
+		SELECT 
+			`id`
+ 		FROM `product_address` 
+ 		WHERE `product_id` = #{0}
+ 		AND `address_id` = #{1}
+ 		AND `status` = 1
+ 		LIMIT 1
+	</select>
+	
+<!--	<select id="queryArtsianLocation" resultType="com.helijia.misc.address.model.ArtisanLocation">-->
+<!--		SELECT -->
+<!--			`location_id` AS locationId,-->
+<!--    		`create_time` AS createTime,-->
+<!--    		`update_time` AS updateTime,-->
+<!--    		`artisan_id` AS artisanId,-->
+<!--    		`longitude` AS longitude,-->
+<!--    		`latitude` AS latitude,-->
+<!--    		`ipaddress` AS ipaddress,-->
+<!--    		`is_del` AS isDel-->
+<!--		FROM `artisan_location`-->
+<!--		WHERE `artisan_id` = #{0}-->
+<!--		LIMIT 1-->
+<!--	</select>-->
+	
+<!--	<select id="queryProductAddress" resultType="com.helijia.misc.address.model.ProductAddress">-->
+<!--		SELECT -->
+<!--			`id` AS id,-->
+<!--    		`product_id` AS productId,-->
+<!--    		`address_id` AS addressId,-->
+<!--    		`status` AS status,-->
+<!--    		`ctime` AS ctime,-->
+<!--    		`utime` AS utime-->
+<!--   		FROM `product_address`-->
+<!--		WHERE `product_id` = #{productId}-->
+<!--		AND `address_id` = #{addressId}-->
+<!--		AND `status` = 1-->
+<!--		LIMIT 1-->
+<!--	</select>-->
+	
+<!--	<select id="queryProductAddresses" resultType="com.helijia.misc.address.model.ProductAddress">-->
+<!--		SELECT -->
+<!--			`id` AS id,-->
+<!--    		`product_id` AS productId,-->
+<!--    		`address_id` AS addressId,-->
+<!--    		`status` AS status,-->
+<!--    		`ctime` AS ctime,-->
+<!--    		`utime` AS utime-->
+<!--   		FROM `product_address`-->
+<!--		WHERE `product_id` = #{productId}-->
+<!--		AND `status` = 1-->
+<!--	</select>-->
+	
+<!--	<insert id="insertProductAddress" useGeneratedKeys="true" keyProperty="id" parameterType="com.helijia.misc.address.model.ProductAddress">-->
+<!--		INSERT INTO `product_address`-->
+<!--		(`product_id`, `address_id`, `status`, `ctime`, `utime`)-->
+<!--        VALUES(#{productId}, #{addressId}, #{status}, NOW(), NOW())-->
+<!--	</insert>-->
+	
+	<update id="updateProductAddressStatus">
+		UPDATE `product_address` SET
+		`status` = #{status},
+		`utime` = NOW()
+		WHERE `address_id` = #{addressId}
+	</update>
+	
+	<delete id="deleteProductAddress">
+		DELETE FROM `product_address`
+		WHERE `product_id` = #{productId}
+	</delete>
+</mapper>

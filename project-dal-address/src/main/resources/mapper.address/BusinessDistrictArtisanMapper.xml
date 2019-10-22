@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dal.address.repository.db.BusinessDistrictArtisanMapper" >
+  <resultMap id="BaseResultMap" type="project.dal.address.entity.BusinessDistrictArtisan" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_district_id" property="businessDistrictId" jdbcType="BIGINT" />
+    <result column="artisan_id" property="artisanId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_district_id, artisan_id, create_date, flag
+  </sql>
+
+
+  <select id="queryBusinessDistrictIdsOfArtisan" resultType="java.lang.Long">
+  SELECT `business_district_id` FROM `business_district_artisan`
+  WHERE `artisan_id` = #{artisanId} and `type` = 0
+</select>
+
+
+  <select id="queryBusinessDistrictIdsOfArtisanByType" resultType="java.lang.Long">
+    SELECT `business_district_id` FROM `business_district_artisan`
+    WHERE `artisan_id` = #{artisanId,jdbcType=VARCHAR} and `type` = #{type,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryByBdIds" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM `business_district_artisan`
+    WHERE business_district_id IN
+    <foreach item="item" index="index" collection="bdIds" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+    and `type` = 0
+  </select>
+
+
+
+  <delete id="deleteBusinessDistrictsOfArtisan">
+    DELETE FROM `business_district_artisan` WHERE `artisan_id` = #{artisanId} and `type` = #{type,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="saveBusinessDistrictsOfArtisan">
+    INSERT INTO `business_district_artisan`
+    (`business_district_id`, `artisan_id`, `create_time`, `type`) VALUES
+    <foreach collection="businessDistrictIds" item="businessDistrictId"  separator=",">
+      (#{businessDistrictId}, #{artisanId}, NOW(), #{type,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <select id="getByArtisanId" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from business_district_artisan
+    where artisan_id = #{artisanId} and `type` = #{type,jdbcType=INTEGER}
+  </select>
+
+  <select id="getByArtisanIdAndBDIds" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from business_district_artisan
+    where artisan_id = #{artisanId}
+    and business_district_id IN
+    <foreach item="item" index="index" collection="businessDistrictIdList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    and `type` = #{type,jdbcType=INTEGER}
+  </select>
+
+  <select id="getByArtisanIdsAndType" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from business_district_artisan
+    where `type` = #{type,jdbcType=INTEGER}
+    and artisan_id IN
+    <foreach item="item" index="index" collection="artisanIds" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+
+  </select>
+
+  <select id="getCheckBizByArtisanIds" resultType="java.lang.Long" parameterType="map" >
+  select
+    business_district_id
+  from business_district_artisan
+    where `type` = 0
+    and artisan_id IN
+  <foreach item="item" index="index" collection="artisanIds" open="(" separator="," close=")">
+    #{item}
+  </foreach>
+
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from business_district_artisan
+    where id = #{id,jdbcType=BIGINT} and `type` = 0
+  </select>
+  <delete id="deleteByPrimaryKey"  >
+    delete from business_district_artisan
+    where id = #{id,jdbcType=BIGINT} and `type` = #{type,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.helijia.misc.address.model.BusinessDistrictArtisan" >
+    insert into business_district_artisan (id, business_district_id, artisan_id, 
+      create_time, flag)
+    values (#{id,jdbcType=BIGINT}, #{businessDistrictId,jdbcType=BIGINT}, #{artisanId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{flag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.helijia.misc.address.model.BusinessDistrictArtisan" >
+    insert into business_district_artisan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessDistrictId != null" >
+        business_district_id,
+      </if>
+      <if test="artisanId != null" >
+        artisan_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="businessDistrictId != null" >
+        #{businessDistrictId,jdbcType=BIGINT},
+      </if>
+      <if test="artisanId != null" >
+        #{artisanId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.helijia.misc.address.model.BusinessDistrictArtisan" >
+    update business_district_artisan
+    <set >
+      <if test="businessDistrictId != null" >
+        business_district_id = #{businessDistrictId,jdbcType=BIGINT},
+      </if>
+      <if test="artisanId != null" >
+        artisan_id = #{artisanId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT} and `type` = 0
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.helijia.misc.address.model.BusinessDistrictArtisan" >
+    update business_district_artisan
+    set business_district_id = #{businessDistrictId,jdbcType=BIGINT},
+      artisan_id = #{artisanId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT} and `type` = 0
+  </update>
+</mapper>

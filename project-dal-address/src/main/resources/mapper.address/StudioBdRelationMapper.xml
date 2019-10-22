@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="project.dal.address.repository.db.StudioBdRelationMapper" >
+  <resultMap id="BaseResultMap" type="project.dal.address.entity.StudioBdRelation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bd_id" property="bdId" jdbcType="INTEGER" />
+    <result column="studio_id" property="studioId" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, bd_id, studio_id
+  </sql>
+  <select id="selectByBdIds" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from studio_bd_relation
+    where bd_id in
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </select>
+  
+</mapper>
