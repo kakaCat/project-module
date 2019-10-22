@@ -1,0 +1,1 @@
+package project.dal.address.entity;import java.util.Date;public class BusinessDistrictArtisanHistory extends BaseModel{    private Long businessDistrictId;    private String artisanId;    private Date createTime;    private Date updateTime;    private Byte isDel;    private Date delTime;    private int type;}
