@@ -409,11 +409,8 @@ public class DefaultTimeInventoryService implements TimeInventoryService {
         int retryLimit = 3;
         for (int retry = 1;retry <= retryLimit;retry++) {
             // 针对操作时间库存的正常情况
-            Date date = DateUtil.parseDateTime("2019-10-16 00:00:00");
-            ArrayList<Date> dates = new ArrayList<>();
-            dates.add(date);
             List<TimeInventoryModel> inventories = timeInventoryMapper.getTimeInventoriesBySeparateDates(
-                    param.getScope(), param.getScopeId(), dates);
+                    param.getScope(), param.getScopeId(), param.getDates());
 
 //            if (CollectionUtils.isEmpty(inventories)) {
 //                LOGGER.warn("time inventory not exist : {}", param.toString());

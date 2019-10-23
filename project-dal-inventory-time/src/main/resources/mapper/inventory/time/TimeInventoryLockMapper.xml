@@ -28,6 +28,13 @@
         <result column="lock_scope_id" property="lockScopeId" jdbcType="VARCHAR" />
     </resultMap>
 
+    <sql id="Base_Column_List">
+         `create_date`, `update_date`, `positions`, `time_unit`,
+            `inventory_time`, `lock_state`, `scope`, `scope_id`, `lock_scope`, `lock_scope_id`,id
+    </sql>
+
+
+
     <insert id="createTimeInventoryLock" useGeneratedKeys="true" keyProperty="id" >
         INSERT INTO inventory_time_lock
         (
@@ -41,22 +48,22 @@
     </insert>
 
     <select id="getTimeInventoryLock" resultMap="resultMap">
-        SELECT * FROM inventory_time_lock
+        SELECT <include refid="Base_Column_List" /> FROM inventory_time_lock
         WHERE
             id = #{id}
     </select>
 
     <select id="getTimeInventoryLocks" resultMap="resultMap">
-        SELECT * FROM inventory_time_lock
+        SELECT <include refid="Base_Column_List" />  FROM inventory_time_lock
         <where>
             <if test="date != null">
-                `date` = #{date}
+                `inventory_time` = #{date}
             </if>
             <if test="startDate != null">
-                AND `date` >= #{startDate}
+                AND `inventory_time` >= #{startDate}
             </if>
             <if test="endDate != null">
-                AND `date` &lt; #{endDate}
+                AND `inventory_time` &lt; #{endDate}
             </if>
             <if test="state != null">
                 AND state = #{state}
@@ -81,13 +88,13 @@
         SELECT COUNT(*) FROM inventory_time_lock
         <where>
             <if test="date != null">
-                `date` = #{date}
+                `inventory_time` = #{date}
             </if>
             <if test="startDate != null">
-                AND `date` >= #{startDate}
+                AND `inventory_time` >= #{startDate}
             </if>
             <if test="endDate != null">
-                AND `date` &lt; #{endDate}
+                AND `inventory_time` &lt; #{endDate}
             </if>
             <if test="state != null">
                 AND state = #{state}
@@ -108,7 +115,7 @@
     </select>
 
     <select id="getTimeInventoryLocksByLockScope" resultMap="resultMap">
-        SELECT * FROM inventory_time_lock
+        SELECT <include refid="Base_Column_List" />  FROM inventory_time_lock
         <where>
             <if test="lockScope != null">
                 lock_scope = #{lockScope}
@@ -117,7 +124,7 @@
                 AND lock_scope_id = #{lockScopeId}
             </if>
             <if test="state != null">
-                AND state = #{state}
+                AND lock_state = #{state}
             </if>
         </where>
         LIMIT 30
@@ -134,7 +141,7 @@
     </select>
 
     <select id="getTimeInventoryLocksByScopeAndDates" resultMap="resultMap">
-        SELECT * FROM inventory_time_lock
+        SELECT <include refid="Base_Column_List" />  FROM inventory_time_lock
         <where>
             <if test="scope != null">
                 scope = #{scope}
@@ -143,13 +150,13 @@
                 AND scope_id = #{scopeId}
             </if>
             <if test="state != null">
-                AND state = #{state}
+                AND lock_state = #{state}
             </if>
             <if test="startDate != null">
-                AND date >= #{startDate}
+                AND inventory_time >= #{startDate}
             </if>
             <if test="endDate != null">
-                AND date &lt; #{endDate}
+                AND inventory_time &lt; #{endDate}
             </if>
         </where>
     </select>
@@ -166,17 +173,17 @@
         WHERE
             id = #{id}
         AND
-            state = 1
+        lock_state = 1
     </update>
 
     <update id="releaseTimeInventoryLock">
         UPDATE inventory_time_lock
         SET
-            state = 0,
+            lock_state = 0,
             update_date = now()
         WHERE
             id = #{id}
         AND
-            state = 1
+            lock_state = 1
     </update>
 </mapper>

@@ -64,7 +64,7 @@ public class TimeInventoryMapperTest {
         public void ConverterCatesTime() {
 
                 List<Date> list = new ArrayList<>();
-                list.add(DateUtil.parseDate("2019-10-16"));
+                list.add(DateUtil.parseYYYYMMDD("2019-10-16"));
                 List<TimeInventoryModel> model = timeInventoryMapper.getTimeInventoriesBySeparateDates(scope, scopeId, list);
 
 

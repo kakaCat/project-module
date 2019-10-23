@@ -1,6 +1,7 @@
 package project.dal.inventory.time.policy;
 
 import org.springframework.stereotype.Service;
+import project.dal.inventory.time.metadata.LockPolicy;
 import project.dal.inventory.time.policy.createpolicy.DefaultDayShift;
 import project.dal.inventory.time.policy.lockpolicy.HomeOrigin;
 
@@ -21,7 +22,7 @@ public class Policyfactory {
 
     }
     static  {
-        lockPolicies.put(1,new HomeOrigin());
+        lockPolicies.put(LockPolicy.HOME_ORIGIN.getIndex(),new HomeOrigin());
     }
 
     public TimeInventoryCreatePolicy getCreatePolicy(int policy) {

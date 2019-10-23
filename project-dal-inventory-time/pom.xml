@@ -20,5 +20,17 @@
 
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.aaa</groupId>
+            <artifactId>misc.common</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aaa</groupId>
+            <artifactId>helijia.datasource</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

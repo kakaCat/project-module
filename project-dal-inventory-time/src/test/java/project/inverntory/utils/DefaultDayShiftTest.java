@@ -22,8 +22,8 @@ public class DefaultDayShiftTest {
         createParam.setScopeId("test");
         createParam.setTimeUnit(TimeUnitState.UNIT_HALF.getState());
         createParam.setPolicy(TimeInventoryCreateParam.POLICY_ALL_DISABLED);
-        createParam.setStartDate(DateUtil.parseDate("2018-05-01"));
-        createParam.setEndDate(DateUtil.parseDate("2018-05-05"));
+        createParam.setStartDate(DateUtil.parseYYYYMMDD("2018-05-01"));
+        createParam.setEndDate(DateUtil.parseYYYYMMDD("2018-05-05"));
 
         DefaultDayShift defaultDayShift = new DefaultDayShift();
         TimeInventoryCreatePolicy.TimeInventoryCreateValues values = defaultDayShift.create(createParam);

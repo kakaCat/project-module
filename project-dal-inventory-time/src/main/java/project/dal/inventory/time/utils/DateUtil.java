@@ -59,15 +59,30 @@ public final class DateUtil {
         return cal.getTime();
     }
 
-    public static Date parseDate(String date) {
+    /**
+     * 获取几个小时后的时间
+     * @param startDate
+     * @param hour
+     * @return
+     */
+    public static Date getNextHourDate(Date startDate, int hour) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        cal.add(Calendar.HOUR_OF_DAY, hour);
+        return cal.getTime();
+    }
+
+
+
+    public static Date parseYYYYMMDD(String date) {
         return parseDateTime(date, YYYYMMDD);
     }
 
-    public static String formatDate(Date date) {
+    public static String formatYYYYMMDD(Date date) {
         return formatDateTime(date, YYYYMMDD);
     }
 
-    public static Date parseDateTime(String date) {
+    public static Date parseYYYMMDDHHMMSS(String date) {
         return parseDateTime(date, YYYYMMDD_HHMMSS);
     }
 
@@ -107,7 +122,7 @@ public final class DateUtil {
      * @Param [startDate, endDate]
      * @return java.util.List<java.util.Date>
      **/
-    public List<Date> getDates(Date startDate,Date endDate) {
+    public static List<Date> getDates(Date startDate, Date endDate) {
         List<Date> dates = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         cal.setTime(startDate);
@@ -118,6 +133,46 @@ public final class DateUtil {
             cal.add(Calendar.DATE, 1);
         }
         return dates;
+    }
+
+
+    /**
+     * 通过颗粒度获取时间在当天的位置
+     * @param granularity
+     * @param date
+     * @return
+     */
+    public static int getDateSubscript(int granularity, Date date) {
+        Date d = DateUtil.toDate(date);
+        long dateInt = date.getTime();
+        long dInt = d.getTime();
+        long l = (dateInt - dInt) / 1000 / 60;
+        return (int)(l / granularity);
+    }
+
+    /**
+     * 通过时间颗粒度获取一天的所有时间点
+     * @param granularity
+     * @return
+     */
+    public static List<Date> getAllDate(int granularity, Date date){
+        List<Date> result = new ArrayList<Date>();
+        Date startDate = DateUtil.toDate(date);
+        Date endDate = DateUtil.nextDate(date, 1);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        while(cal.getTime().before(endDate)){
+            result.add(cal.getTime());
+            cal.add(Calendar.MINUTE, granularity);
+        }
+        return result;
+    }
+
+
+    public static void main(String[] args) {
+//        Date startDate = DateUtil.parseDateTime("2019-10-23 10:00:00");
+//        int dateSubscript = getDateSubscript(30, startDate);
+//        System.out.println(dateSubscript);
     }
 
 

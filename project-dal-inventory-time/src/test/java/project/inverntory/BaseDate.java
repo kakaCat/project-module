@@ -9,4 +9,5 @@ public abstract class BaseDate {
 
     protected static final String scopeId ="test";
 
+    private static final int SERVICE_COST_TIME = 120;
 }
