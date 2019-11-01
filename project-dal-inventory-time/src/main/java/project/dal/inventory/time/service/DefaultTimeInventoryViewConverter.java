@@ -135,62 +135,67 @@ public class DefaultTimeInventoryViewConverter implements TimeInventoryViewConve
         int positionLength = TimeUnitState.getTimeUnitState(inventories.get(0).getTimeUnit()).getLength();
 
         if (lockParam.isConvertWithCurrentTime()) {
-            // 当前时间点
-            Date currentTime = new Date();
-            // 处理当前时间导致的时间过期
-            for (int i = 0; i < temporaryViews.size(); i++) {
-                TimeInventoryViewModel view = temporaryViews.get(i);
-                for (TimeInventoryItemModel item : view.getItems()) {
-                    if (item.getDate().compareTo(currentTime) <= 0) {
-                        item.setState(affectedState);
-                        item.setStateMessage(getStateMessage(affectedState));
-                    }
-                }
-            }
+            TimeInventoryUtil.overdue(temporaryViews);
+
+//            // 当前时间点
+//            Date currentTime = new Date();
+//            // 处理当前时间导致的时间过期
+//            for (int i = 0; i < temporaryViews.size(); i++) {
+//                TimeInventoryViewModel view = temporaryViews.get(i);
+//                for (TimeInventoryItemModel item : view.getItems()) {
+//                    if (item.getDate().compareTo(currentTime) <= 0) {
+//                        item.setState(affectedState);
+//                        item.setStateMessage(getStateMessage(affectedState));
+//                    }
+//                }
+//            }
         }
+
+        TimeInventoryUtil.preProcess(temporaryViews,values,allowed,positionLength);
 
         // 处理前置时间导致的不可约
-        for (int i=0;i<temporaryViews.size();i++) {
-            TimeInventoryViewModel view = temporaryViews.get(i);
-            // 时间库存对象不连续的情况，重置离前一个最近不可约库存单元的单元差
-            if (i!=0 && DateUtil.getIntervalDay(temporaryInventories.get(i-1).getInventoryTime(), temporaryInventories.get(i).getInventoryTime()) != 1) {
-                preAvailableUnits = 0;
-            }
-            for (int j=0;j<positionLength;j++) {
-                int state = view.getItems().get(j).getState();
-                if (allowed.contains(state)) {
-                    if (preAvailableUnits < values.previous) {
-                        state = affectedState;
-                        view.getItems().get(j).setState(state);
-                        view.getItems().get(j).setStateMessage(getStateMessage(state));
-                    }
-                    preAvailableUnits++;
-                } else {
-                    preAvailableUnits = 0;
-                }
-            }
-        }
+//        for (int i=0;i<temporaryViews.size();i++) {
+//            TimeInventoryViewModel view = temporaryViews.get(i);
+//            // 时间库存对象不连续的情况，重置离前一个最近不可约库存单元的单元差
+//            if (i!=0 && DateUtil.getIntervalDay(temporaryInventories.get(i-1).getInventoryTime(), temporaryInventories.get(i).getInventoryTime()) != 1) {
+//                preAvailableUnits = 0;
+//            }
+//            for (int j=0;j<positionLength;j++) {
+//                int state = view.getItems().get(j).getState();
+//                if (allowed.contains(state)) {
+//                    if (preAvailableUnits < values.previous) {
+//                        state = affectedState;
+//                        view.getItems().get(j).setState(state);
+//                        view.getItems().get(j).setStateMessage(getStateMessage(state));
+//                    }
+//                    preAvailableUnits++;
+//                } else {
+//                    preAvailableUnits = 0;
+//                }
+//            }
+//        }
 
         // 处理后置时间导致的不可约
-        for (int i=temporaryViews.size()-1;i>=0;i--) {
-            TimeInventoryViewModel view = temporaryViews.get(i);
-            if (i!=temporaryViews.size()-1 && DateUtil.getIntervalDay(temporaryInventories.get(i).getInventoryTime(), temporaryInventories.get(i+1).getInventoryTime()) != 1) {
-                followAvailableUnit = 0;
-            }
-            for (int j=positionLength-1;j>=0;j--) {
-                int state = view.getItems().get(j).getState();
-                if (allowed.contains(state)) {
-                    followAvailableUnit++;
-                    if (followAvailableUnit < values.following) {
-                        state = affectedState;
-                        view.getItems().get(j).setState(state);
-                        view.getItems().get(j).setStateMessage(getStateMessage(state));
-                    }
-                } else {
-                    followAvailableUnit = 0;
-                }
-            }
-        }
+        TimeInventoryUtil.suffixProcess(temporaryViews,values,allowed,positionLength);
+//        for (int i=temporaryViews.size()-1;i>=0;i--) {
+//            TimeInventoryViewModel view = temporaryViews.get(i);
+//            if (i!=temporaryViews.size()-1 && DateUtil.getIntervalDay(temporaryInventories.get(i).getInventoryTime(), temporaryInventories.get(i+1).getInventoryTime()) != 1) {
+//                followAvailableUnit = 0;
+//            }
+//            for (int j=positionLength-1;j>=0;j--) {
+//                int state = view.getItems().get(j).getState();
+//                if (allowed.contains(state)) {
+//                    followAvailableUnit++;
+//                    if (followAvailableUnit < values.following) {
+//                        state = affectedState;
+//                        view.getItems().get(j).setState(state);
+//                        view.getItems().get(j).setStateMessage(getStateMessage(state));
+//                    }
+//                } else {
+//                    followAvailableUnit = 0;
+//                }
+//            }
+//        }
 
         // 移除加工过程中产生的多余的时间库存对象
         int previousDays = 0;

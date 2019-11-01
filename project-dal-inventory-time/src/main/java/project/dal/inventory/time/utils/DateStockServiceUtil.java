@@ -197,11 +197,11 @@ public class DateStockServiceUtil {
         return getArtisanDateStockVo(artisanDateDetailedList, artisanDateList, startDate, endDate);
     }
 //
-//	/**
-//	 *添加可约时间文案描述
-//	 *
-//	 * @param serviceTime
-//	 */
+	/**
+	 *添加可约时间文案描述
+	 *
+	 * @param serviceTime
+	 */
 	public static void setServiceTimeDesc(ArtisanDateStockSummary serviceTime){
 		String dayState = serviceTime.getDays();
 		int index = dayState.indexOf("1");
@@ -264,8 +264,8 @@ public class DateStockServiceUtil {
             artisanDateStockSummary.setDays(DateStockServiceUtil.listToString(daysStatus));
         }
 
-        artisanDateStockSummary.setDate(DateUtil.formatYYYYMMDD(reqDate));
-		setServiceTimeDesc(artisanDateStockSummary);
+//        artisanDateStockSummary.setDate(DateUtil.formatYYYYMMDD(reqDate));
+//		setServiceTimeDesc(artisanDateStockSummary);
         return artisanDateStockSummary;
 	}
 

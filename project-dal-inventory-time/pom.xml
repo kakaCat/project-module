@@ -31,6 +31,18 @@
             <artifactId>helijia.datasource</artifactId>
             <version>1.2.0</version>
         </dependency>
+        <dependency>
+            <artifactId>project-common-core</artifactId>
+            <groupId>project.module</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <artifactId>project-common-utils</artifactId>
+            <groupId>project.module</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

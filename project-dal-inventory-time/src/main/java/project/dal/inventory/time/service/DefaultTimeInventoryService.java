@@ -469,11 +469,7 @@ public class DefaultTimeInventoryService implements TimeInventoryService {
             }
 
             try {
-//                batchUpdateTimeInventories(internals);
-                for (TimeInventoryRealm internal : internals) {
-                    int count = timeInventoryMapper.updateTimeInventory(internal.getTimeInventoryModel());
-
-                }
+                batchUpdateTimeInventories(internals);
             } catch (Exception e) {
                 LOGGER.error("batch update time inventories failed : {}, the {} try", param.toString(), retry);
                 if (retry+1 > retryLimit) {

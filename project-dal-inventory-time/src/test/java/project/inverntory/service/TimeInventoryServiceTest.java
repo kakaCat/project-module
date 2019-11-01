@@ -75,7 +75,7 @@ public class TimeInventoryServiceTest extends BaseDate {
 
         param.setAmount(60);
         param.setOpSource(scope);
-        param.setTimeUnit(TimeUnitState.UNIT_FULL.getState());
+        param.setTimeUnit(TimeUnitState.UNIT_HALF.getState());
         param.setAmount(120);
         timeInventoryService.lockTimeInventories(param);
 
@@ -106,8 +106,8 @@ public class TimeInventoryServiceTest extends BaseDate {
 
         List<ArtisanDateStockVo> stocks = DateStockServiceUtil.queryAllArtisanDate(scopeId, startDate, endDate, views);
 //
-        ArtisanDateStockSummary artisanDateStockSummary = DateStockServiceUtil.convety2ArtisanDateStockSummary(stocks, startDate, startDate, false);
-        System.out.println(111);
+        ArtisanDateStockSummary convety2ArtisanDateStockSummary = DateStockServiceUtil.convety2ArtisanDateStockSummary(stocks, startDate, startDate, false);
+        System.out.println(convety2ArtisanDateStockSummary.getTimes());
     }
 
 

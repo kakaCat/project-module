@@ -40,11 +40,13 @@ public interface TimeInventoryMapper {
     TimeInventoryModel getTimeInventoryById(Long id);
 
     /**
-     * 获取特定时间段内的时间库存记录
-     * @param param
-     * @return
-     */
-//    List<TimeInventoryModel> getTimeInventoriesByDates(TimeInventoryListParam param);
+     * @description: //某段时间情况
+     *
+     * @Param [scope, scopeId, startDate, endDate]
+     * @return java.util.List<project.dal.inventory.time.entity.TimeInventoryModel>
+     **/
+    List<TimeInventoryModel> queryTimeInventories(@Param("scope") int scope, @Param("scopeId") String scopeId,
+                                                  @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     /**
      * 批量获取领域ids 在指定时间段内的实际库存记录

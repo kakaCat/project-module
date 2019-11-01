@@ -3,23 +3,18 @@ package project.dal.inventory.time.repository.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.dal.inventory.time.entity.TimeInventoryItemModel;
 import project.dal.inventory.time.entity.TimeInventoryModel;
-import project.dal.inventory.time.entity.TimeInventoryOpModel;
-import project.dal.inventory.time.metadata.ByteState;
-import project.dal.inventory.time.param.BaseTimeInventoryStateOpParam;
-import project.dal.inventory.time.param.TimeInventoryLockParam;
-import project.dal.inventory.time.realm.TimeInventoryRealm;
 import project.dal.inventory.time.repository.db.TimeInventoryMapper;
-import project.dal.inventory.time.repository.service.TimeInventoryService;
-import project.dal.inventory.time.utils.DateUtil;
-import project.dal.inventory.time.utils.PositionsConverter;
+import project.dal.inventory.time.repository.param.QueryTimeParam;
+import project.dal.inventory.time.repository.service.TimeInventoryDbService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
-public class TimeInventoryServicelmpl implements TimeInventoryService {
+public class TimeInventoryServicelmpl implements TimeInventoryDbService {
 
     @Autowired
     private TimeInventoryMapper timeInventoryMapper;
@@ -44,7 +39,16 @@ public class TimeInventoryServicelmpl implements TimeInventoryService {
         return timeInventoryMapper.insertTimeInventory(inventory);
     }
 
+    @Override
+    public List<TimeInventoryModel> batchGetTimeInventoriesByDates(QueryTimeParam param) {
 
+        return timeInventoryMapper.batchGetTimeInventoriesByDates(param.getScope(),param.getScopeIds(),param.getStartDate(),param.getEndDate());
+    }
+
+    @Override
+    public List<TimeInventoryModel> queryTimeInventories(QueryTimeParam param) {
+        return timeInventoryMapper.queryTimeInventories(param.getScope(),param.getScopeIdSingle(),param.getStartDate(),param.getEndDate());
+    }
 
 
 }

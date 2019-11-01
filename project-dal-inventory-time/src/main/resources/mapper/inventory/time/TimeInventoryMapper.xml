@@ -21,8 +21,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-		id,scope,scope_id,time_unit,inventory_time,value0,value1,value2,value3,value4,value5,
-		create_date,update_date
+		id,scope,scope_id,time_unit,inventory_time,value0,value1,value2,value3,value4,value5
+
 	</sql>
 
 
@@ -54,28 +54,8 @@
         </foreach>
     </insert>
 
-    <select id="testTimeInventoryByDates" resultType="java.lang.Long">
-        SELECT `id` FROM inventory_time
-        WHERE
-            scope = #{scope}
-        AND
-            scope_id = #{scopeId}
-        AND
-            `date` >= #{startDate}
-        AND
-            `date` &lt; #{endDate}
-        LIMIT 1
-    </select>
-
-<!--    <select id="getTimeInventoryById" resultMap="resultModel" parameterType="java.lang.Long">-->
-<!--        SELECT * FROM-->
-<!--        inventory_time-->
-<!--        WHERE id = #{id};-->
-<!--    </select>-->
-
-<!--    <select id="getTimeInventoriesByDates" resultMap="resultModel">-->
-<!--        SELECT * FROM-->
-<!--        inventory_time-->
+<!--    <select id="testTimeInventoryByDates" resultType="java.lang.Long">-->
+<!--        SELECT `id` FROM inventory_time-->
 <!--        WHERE-->
 <!--            scope = #{scope}-->
 <!--        AND-->
@@ -84,29 +64,49 @@
 <!--            `date` >= #{startDate}-->
 <!--        AND-->
 <!--            `date` &lt; #{endDate}-->
-<!--        ORDER BY `date`;-->
+<!--        LIMIT 1-->
 <!--    </select>-->
 
-<!--    <select id="batchGetTimeInventoriesByDates" resultMap="resultModel">-->
+<!--    <select id="getTimeInventoryById" resultMap="resultModel" parameterType="java.lang.Long">-->
 <!--        SELECT * FROM-->
 <!--        inventory_time-->
-<!--        <where>-->
-<!--            scope = #{scope}-->
-<!--            <if test="scopeIds != null">-->
-<!--                AND scope_id IN-->
-<!--                <foreach collection="scopeIds" index="index" item="item" separator="," open="(" close=")">-->
-<!--                    #{item}-->
-<!--                </foreach>-->
-<!--            </if>-->
-<!--            <if test="startDate != null">-->
-<!--                AND `date` >= #{startDate}-->
-<!--            </if>-->
-<!--            <if test="endDate != null">-->
-<!--                AND `date` &lt; #{endDate}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        ORDER BY scope, scope_id-->
+<!--        WHERE id = #{id};-->
 <!--    </select>-->
+
+    <select id="queryTimeInventories" resultMap="resultModel">
+        SELECT <include refid="Base_Column_List" /> FROM
+        inventory_time
+        WHERE
+            scope = #{scope}
+        AND
+            scope_id = #{scopeId}
+        AND
+            `date` >= #{startDate}
+        AND
+            `date` &lt; #{endDate}
+        ORDER BY `date`;
+    </select>
+
+    <select id="batchGetTimeInventoriesByDates" resultMap="resultModel">
+        SELECT * FROM
+        inventory_time
+        <where>
+            scope = #{scope}
+            <if test="scopeIds != null">
+                AND scope_id IN
+                <foreach collection="scopeIds" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="startDate != null">
+                AND `date` >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND `date` &lt; #{endDate}
+            </if>
+        </where>
+        ORDER BY scope, scope_id
+    </select>
 
     <select id="getTimeInventoriesBySeparateDates" resultMap="resultModel">
         SELECT <include refid="Base_Column_List" /> FROM
